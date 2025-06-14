@@ -147,6 +147,60 @@ useEffect(() => {
         { text: "Racional", tooltip: "Usar lógica y razonamiento sistemático", dimension: "Pensamiento" },
         { text: "Detallista", tooltip: "Prestar atención a aspectos específicos y minuciosos", dimension: "Evaluación" }
       ]
+    },
+    {
+      id: 13,
+      options: [
+        { text: "Mover", tooltip: "Tomar acción directa para avanzar", dimension: "Experiencia" },
+        { text: "Idear", tooltip: "Generar nuevas ideas y conceptos", dimension: "Ideación" },
+        { text: "Razonar", tooltip: "Aplicar lógica y análisis sistemático", dimension: "Pensamiento" },
+        { text: "Determinar", tooltip: "Tomar decisiones firmes y definitivas", dimension: "Evaluación" }
+      ]
+    },
+    {
+      id: 14,
+      options: [
+        { text: "Desvincularse", tooltip: "Mantenerse objetivo y distante", dimension: "Experiencia" },
+        { text: "Enorgullecerse", tooltip: "Sentir satisfacción por los logros creativos", dimension: "Ideación" },
+        { text: "Esperar", tooltip: "Tomarse tiempo para considerar todas las opciones", dimension: "Pensamiento" },
+        { text: "Temer", tooltip: "Ser cauteloso ante los riesgos potenciales", dimension: "Evaluación" }
+      ]
+    },
+    {
+      id: 15,
+      options: [
+        { text: "Ejercitar", tooltip: "Poner en práctica las habilidades adquiridas", dimension: "Experiencia" },
+        { text: "Modificar", tooltip: "Adaptar y cambiar enfoques según sea necesario", dimension: "Ideación" },
+        { text: "Meditar", tooltip: "Reflexionar profundamente sobre las opciones", dimension: "Pensamiento" },
+        { text: "Escoger", tooltip: "Seleccionar la mejor alternativa disponible", dimension: "Evaluación" }
+      ]
+    },
+    {
+      id: 16,
+      options: [
+        { text: "Controlar", tooltip: "Dirigir y gestionar el proceso de manera efectiva", dimension: "Experiencia" },
+        { text: "Imaginar", tooltip: "Visualizar posibilidades y escenarios futuros", dimension: "Ideación" },
+        { text: "Observar", tooltip: "Analizar cuidadosamente los detalles y patrones", dimension: "Pensamiento" },
+        { text: "Evaluar", tooltip: "Juzgar el mérito y valor de las opciones", dimension: "Evaluación" }
+      ]
+    },
+    {
+      id: 17,
+      options: [
+        { text: "Empatizar", tooltip: "Conectar emocionalmente con la situación", dimension: "Experiencia" },
+        { text: "Aplicar", tooltip: "Utilizar conocimientos de manera práctica", dimension: "Ideación" },
+        { text: "Sentir", tooltip: "Confiar en la intuición y percepción", dimension: "Pensamiento" },
+        { text: "Retrasar", tooltip: "Esperar el momento más apropiado para actuar", dimension: "Evaluación" }
+      ]
+    },
+    {
+      id: 18,
+      options: [
+        { text: "Actuar", tooltip: "Implementar soluciones de manera inmediata", dimension: "Experiencia" },
+        { text: "Distinguir", tooltip: "Identificar diferencias y matices importantes", dimension: "Ideación" },
+        { text: "Analizar", tooltip: "Descomponer problemas en elementos manejables", dimension: "Pensamiento" },
+        { text: "Garantizar", tooltip: "Asegurar que los resultados cumplan estándares", dimension: "Evaluación" }
+      ]
     }
   ];
 

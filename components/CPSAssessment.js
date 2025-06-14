@@ -557,7 +557,7 @@ const downloadResults = async () => {
     );
   };
 
-  // REEMPLAZAR toda la sección "if (showResults)" por esto:
+// REEMPLAZAR toda la sección "if (showResults)" por esta versión responsiva:
 
 if (showResults) {
   const maxPercentage = Math.max(...Object.values(showResults.porcentajes));
@@ -574,48 +574,55 @@ if (showResults) {
         <div className="absolute bottom-20 right-20 w-20 h-20 border border-white/10 rotate-12"></div>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto p-8">
-        <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-12 shadow-2xl">
-          <div className="text-center mb-12">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
-              <CheckCircle2 className="w-10 h-10 text-white" />
+      <div className="relative z-10 max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="backdrop-blur-xl bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 p-6 sm:p-8 lg:p-12 shadow-2xl">
+          
+          {/* HEADER */}
+          <div className="text-center mb-8 lg:mb-12">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
+              <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </div>
-            <h1 className="text-4xl font-thin text-white mb-4 tracking-wide">Evaluación completada</h1>
-            <p className="text-white/70 text-lg font-light">Tu perfil innovador</p>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-thin text-white mb-2 sm:mb-4 tracking-wide">Evaluación completada</h1>
+            <p className="text-white/70 text-base sm:text-lg font-light">Tu perfil innovador</p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            {/* GRÁFICO A LA IZQUIERDA */}
-            <div className="flex flex-col items-center">
-              <SpiderChart data={showResults.porcentajes} />
+          {/* LAYOUT RESPONSIVO: Stack en móvil, Grid en desktop */}
+          <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
+            
+            {/* GRÁFICO - Primero en móvil */}
+            <div className="flex flex-col items-center order-1 lg:order-1">
+              <div className="w-full max-w-sm lg:max-w-none">
+                <SpiderChart data={showResults.porcentajes} />
+              </div>
             </div>
 
-            {/* PERFIL DETALLADO A LA DERECHA */}
-            <div className="space-y-8">
-              <h2 className="text-2xl font-thin text-white mb-8 tracking-wide">Perfil detallado</h2>
+            {/* PERFIL DETALLADO - Segundo en móvil */}
+            <div className="space-y-6 lg:space-y-8 order-2 lg:order-2">
+              <h2 className="text-xl sm:text-2xl font-thin text-white mb-6 lg:mb-8 tracking-wide">Perfil detallado</h2>
+              
               {Object.entries(showResults.porcentajes).map(([cuadrante, porcentaje], index) => (
                 <div key={cuadrante} className="group">
-                  <div className={`backdrop-blur-sm rounded-2xl border transition-all duration-300 ${
+                  <div className={`backdrop-blur-sm rounded-xl sm:rounded-2xl border transition-all duration-300 ${
                     cuadrante === dominantStyle 
                       ? 'bg-white/10 border-white/30 shadow-lg' 
                       : 'bg-white/5 border-white/10 hover:border-white/20'
                   }`}>
-                    <div className="p-6">
-                      <div className="flex justify-between items-center mb-4">
-                        <div className="flex items-center gap-4">
-                          <div className={`w-4 h-4 rounded-full ${
+                    <div className="p-4 sm:p-6">
+                      <div className="flex justify-between items-center mb-3 sm:mb-4">
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${
                             index === 0 ? 'bg-white' : 
                             index === 1 ? 'bg-white/75' : 
                             index === 2 ? 'bg-white/50' : 'bg-white/25'
                           }`}></div>
-                          <span className={`text-xl font-light tracking-wide ${
+                          <span className={`text-lg sm:text-xl font-light tracking-wide ${
                             cuadrante === dominantStyle ? 'text-white' : 'text-white/80'
                           }`}>
                             {cuadrante}
-                            {cuadrante === dominantStyle && <span className="ml-2 text-2xl">⭐</span>}
+                            {cuadrante === dominantStyle && <span className="ml-2 text-xl sm:text-2xl">⭐</span>}
                           </span>
                         </div>
-                        <span className={`text-2xl font-thin tracking-wider ${
+                        <span className={`text-xl sm:text-2xl font-thin tracking-wider ${
                           cuadrante === dominantStyle ? 'text-white' : 'text-white/70'
                         }`}>
                           {porcentaje.toFixed(1)}%
@@ -640,86 +647,88 @@ if (showResults) {
                 </div>
               ))}
 
-              <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-8">
-                <h3 className="text-xl font-light text-white mb-3 tracking-wide">Estilo dominante</h3>
-                <p className="text-white/90 text-lg">
+              <div className="backdrop-blur-sm bg-white/5 rounded-xl sm:rounded-2xl border border-white/10 p-6 sm:p-8">
+                <h3 className="text-lg sm:text-xl font-light text-white mb-2 sm:mb-3 tracking-wide">Estilo dominante</h3>
+                <p className="text-white/90 text-base sm:text-lg">
                   <strong className="font-normal">{dominantStyle}</strong>
                 </p>
-                <p className="text-white/60 text-sm mt-3 font-light">
+                <p className="text-white/60 text-sm font-light mt-2 sm:mt-3">
                   {showResults.porcentajes[dominantStyle]?.toFixed(1)}% de preferencia hacia este perfil innovador
                 </p>
               </div>
             </div>
           </div>
 
-   {/* SECCIÓN DETALLADA DEL PERFIL DOMINANTE */}
-<div className="mt-16">
-  <div className="backdrop-blur-sm bg-white/5 rounded-3xl border border-white/10 p-12">
-    <div className="border-l-4 border-white/30 pl-8">
-      <h3 className="text-3xl font-thin text-white mb-6 tracking-wide">
-        {profileDescriptions[dominantStyle]?.title}
-      </h3>
-      
-      <div className="grid md:grid-cols-3 gap-12">
-        {/* CARACTERÍSTICAS */}
-        <div>
-          <h4 className="text-white/90 font-normal mb-6 text-lg tracking-wide flex items-center gap-3">
-            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-            Características
-          </h4>
-          <ul className="space-y-4">
-            {profileDescriptions[dominantStyle]?.characteristics.map((char, index) => (
-              <li key={index} className="flex items-start gap-3 text-white/70 font-light">
-                <span className="text-white/40 mt-2">•</span>
-                <span className="leading-relaxed">{char}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-        {/* FORTALEZAS */}
-        <div>
-          <h4 className="text-white/90 font-normal mb-6 text-lg tracking-wide flex items-center gap-3">
-            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-            Fortalezas
-          </h4>
-          <ul className="space-y-4">
-            {profileDescriptions[dominantStyle]?.strengths.map((strength, index) => (
-              <li key={index} className="flex items-start gap-3 text-white/70 font-light">
-                <span className="text-white/40 mt-2">•</span>
-                <span className="leading-relaxed">{strength}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-        {/* CONSEJOS */}
-        <div>
-          <h4 className="text-white/90 font-normal mb-6 text-lg tracking-wide flex items-center gap-3">
-            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-            Consejos
-          </h4>
-          <ul className="space-y-4">
-            {profileDescriptions[dominantStyle]?.tips.map((tip, index) => (
-              <li key={index} className="flex items-start gap-3 text-white/70 font-light">
-                <span className="text-white/40 mt-2">•</span>
-                <span className="leading-relaxed">{tip}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+          {/* SECCIÓN DETALLADA DEL PERFIL - Ahora responsiva */}
+          <div className="mt-12 lg:mt-16">
+            <div className="backdrop-blur-sm bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 p-6 sm:p-8 lg:p-12">
+              <div className="border-l-4 border-white/30 pl-4 sm:pl-6 lg:pl-8">
+                <h3 className="text-2xl sm:text-3xl font-thin text-white mb-4 sm:mb-6 tracking-wide">
+                  {profileDescriptions[dominantStyle]?.title}
+                </h3>
+                
+                {/* Grid responsivo para las 3 secciones */}
+                <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8 xl:gap-12">
+                  {/* CARACTERÍSTICAS */}
+                  <div>
+                    <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
+                      <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+                      Características
+                    </h4>
+                    <ul className="space-y-3 sm:space-y-4">
+                      {profileDescriptions[dominantStyle]?.characteristics.map((char, index) => (
+                        <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
+                          <span className="text-white/40 mt-1 sm:mt-2">•</span>
+                          <span className="leading-relaxed">{char}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  {/* FORTALEZAS */}
+                  <div>
+                    <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
+                      <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+                      Fortalezas
+                    </h4>
+                    <ul className="space-y-3 sm:space-y-4">
+                      {profileDescriptions[dominantStyle]?.strengths.map((strength, index) => (
+                        <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
+                          <span className="text-white/40 mt-1 sm:mt-2">•</span>
+                          <span className="leading-relaxed">{strength}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  {/* CONSEJOS */}
+                  <div>
+                    <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
+                      <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+                      Consejos
+                    </h4>
+                    <ul className="space-y-3 sm:space-y-4">
+                      {profileDescriptions[dominantStyle]?.tips.map((tip, index) => (
+                        <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
+                          <span className="text-white/40 mt-1 sm:mt-2">•</span>
+                          <span className="leading-relaxed">{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
-          <div className="text-center mt-16">
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          {/* BOTONES RESPONSIVOS */}
+          <div className="text-center mt-12 lg:mt-16">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
               <button
                 onClick={downloadResults}
-                className="flex items-center justify-center gap-3 px-12 py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-lg tracking-wide transition-all duration-300 shadow-xl"
+                className="flex items-center justify-center gap-3 px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-xl sm:rounded-2xl text-white font-light text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 Descargar mis resultados
@@ -727,7 +736,7 @@ if (showResults) {
               
               <button
                 onClick={resetAssessment}
-                className="backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-12 py-4 rounded-2xl font-light text-lg tracking-wide transition-all duration-300 shadow-xl"
+                className="backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-8 sm:px-12 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-light text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl"
               >
                 Nueva evaluación
               </button>

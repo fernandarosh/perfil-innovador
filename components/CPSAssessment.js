@@ -445,7 +445,10 @@ const downloadResults = async () => {
     
     pdf.setTextColor(255, 255, 255);
     pdf.setFontSize(24);
-    pdf.text('MI PERFIL INNOVADOR', pageWidth/2, 25, { align: 'center' });
+    pdf.text('MI PERFIL INNOVADOR', pageWidth/2, 20, { align: 'center' });
+    
+    pdf.setFontSize(14);
+    pdf.text('Evaluación CPS - Creative Problem Solving', pageWidth/2, 30, { align: 'center' });
     
     // INFORMACIÓN PERSONAL
     let yPos = 55;

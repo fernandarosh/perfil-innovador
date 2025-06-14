@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Info, CheckCircle2, User, Mail, Building, Briefcase, Globe, Phone } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
-import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ywtdjwkxgvtntaicksbk.supabase.co';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3dGRqd2t4Z3Z0bnRhaWNrc2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4NjIyNjYsImV4cCI6MjA2NTQzODI2Nn0.OlBckntHtKRGgVAaSpmUtrpxUm3wCMefqftXJd0j-kY';
@@ -404,27 +404,183 @@ const CPSAssessment = () => {
   };
 
 const downloadResults = async () => {
-  const element = document.querySelector('.backdrop-blur-xl.bg-white\\/5'); // Selecciona el contenedor principal
-  if (element) {
-    try {
-      const canvas = await html2canvas(element, {
-        backgroundColor: '#000000',
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        width: element.offsetWidth,
-        height: element.offsetHeight
+  try {
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    
+    // Obtener el estilo dominante
+    const maxPercentage = Math.max(...Object.values(showResults.porcentajes));
+    const dominantStyle = Object.keys(showResults.porcentajes).find(
+      key => showResults.porcentajes[key] === maxPercentage
+    );
+    
+    // Configurar fuente
+    pdf.setFont('helvetica');
+    
+    // ENCABEZADO
+    pdf.setFillColor(0, 0, 0);
+    pdf.rect(0, 0, pageWidth, 40, 'F');
+    
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(24);
+    pdf.text('MI PERFIL INNOVADOR', pageWidth/2, 20, { align: 'center' });
+    
+    pdf.setFontSize(14);
+    pdf.text('Evaluación CPS - Creative Problem Solving', pageWidth/2, 30, { align: 'center' });
+    
+    // INFORMACIÓN PERSONAL
+    let yPos = 55;
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('INFORMACIÓN PERSONAL', 20, yPos);
+    
+    yPos += 10;
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Nombre: ${userData.nombre}`, 20, yPos);
+    yPos += 7;
+    pdf.text(`Email: ${userData.email}`, 20, yPos);
+    yPos += 7;
+    pdf.text(`Empresa: ${userData.empresa}`, 20, yPos);
+    yPos += 7;
+    pdf.text(`Cargo: ${userData.cargo}`, 20, yPos);
+    yPos += 7;
+    pdf.text(`País: ${userData.pais}`, 20, yPos);
+    
+    // ESTILO DOMINANTE
+    yPos += 20;
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('ESTILO DOMINANTE', 20, yPos);
+    
+    yPos += 10;
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(20, yPos - 5, pageWidth - 40, 15, 'F');
+    
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(0, 0, 0);
+    pdf.text(`${dominantStyle} - ${showResults.porcentajes[dominantStyle]?.toFixed(1)}%`, 25, yPos + 5);
+    
+    // RESULTADOS POR CUADRANTE
+    yPos += 25;
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('RESULTADOS POR CUADRANTE', 20, yPos);
+    
+    yPos += 10;
+    Object.entries(showResults.porcentajes).forEach(([cuadrante, porcentaje], index) => {
+      // Nombre del cuadrante
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`${cuadrante}:`, 20, yPos);
+      
+      // Porcentaje
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`${porcentaje.toFixed(1)}%`, 80, yPos);
+      
+      // Barra de progreso
+      const barWidth = 80;
+      const barHeight = 4;
+      const barX = 110;
+      const barY = yPos - 2;
+      
+      // Fondo de la barra
+      pdf.setFillColor(220, 220, 220);
+      pdf.rect(barX, barY, barWidth, barHeight, 'F');
+      
+      // Progreso de la barra
+      const fillColor = cuadrante === dominantStyle ? [0, 0, 0] : [150, 150, 150];
+      pdf.setFillColor(...fillColor);
+      pdf.rect(barX, barY, (porcentaje / 100) * barWidth, barHeight, 'F');
+      
+      yPos += 12;
+    });
+    
+    // DESCRIPCIÓN DEL PERFIL DOMINANTE
+    if (profileDescriptions[dominantStyle]) {
+      yPos += 15;
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`PERFIL: ${profileDescriptions[dominantStyle].title.toUpperCase()}`, 20, yPos);
+      
+      yPos += 15;
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Características:', 20, yPos);
+      
+      yPos += 8;
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'normal');
+      profileDescriptions[dominantStyle].characteristics.forEach((char, index) => {
+        const lines = pdf.splitTextToSize(`• ${char}`, pageWidth - 40);
+        lines.forEach(line => {
+          if (yPos > pageHeight - 30) {
+            pdf.addPage();
+            yPos = 30;
+          }
+          pdf.text(line, 25, yPos);
+          yPos += 6;
+        });
       });
       
-      const link = document.createElement('a');
-      link.download = `perfil-innovador-${userData.nombre.replace(/\s+/g, '-')}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch (error) {
-      console.error('Error al generar la imagen:', error);
-      alert('Error al generar la imagen. Inténtalo de nuevo.');
+      yPos += 5;
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Fortalezas:', 20, yPos);
+      
+      yPos += 8;
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'normal');
+      profileDescriptions[dominantStyle].strengths.forEach((strength, index) => {
+        const lines = pdf.splitTextToSize(`• ${strength}`, pageWidth - 40);
+        lines.forEach(line => {
+          if (yPos > pageHeight - 30) {
+            pdf.addPage();
+            yPos = 30;
+          }
+          pdf.text(line, 25, yPos);
+          yPos += 6;
+        });
+      });
+      
+      yPos += 5;
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Consejos para el desarrollo:', 20, yPos);
+      
+      yPos += 8;
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'normal');
+      profileDescriptions[dominantStyle].tips.forEach((tip, index) => {
+        const lines = pdf.splitTextToSize(`• ${tip}`, pageWidth - 40);
+        lines.forEach(line => {
+          if (yPos > pageHeight - 30) {
+            pdf.addPage();
+            yPos = 30;
+          }
+          pdf.text(line, 25, yPos);
+          yPos += 6;
+        });
+      });
     }
+    
+    // PIE DE PÁGINA
+    const footerY = pageHeight - 20;
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'italic');
+    pdf.setTextColor(100, 100, 100);
+    pdf.text(`Generado el ${new Date().toLocaleDateString('es-ES')} a las ${new Date().toLocaleTimeString('es-ES')}`, pageWidth/2, footerY, { align: 'center' });
+    
+    // DESCARGAR EL PDF
+    const fileName = `perfil-innovador-${userData.nombre.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+    pdf.save(fileName);
+    
+  } catch (error) {
+    console.error('Error al generar el PDF:', error);
+    alert('Error al generar el PDF. Inténtalo de nuevo.');
   }
 };
   
@@ -718,9 +874,9 @@ if (showResults) {
                 className="flex items-center justify-center gap-3 px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
-                Descargar mis resultados
+                Descargar PDF
               </button>
               
               <button

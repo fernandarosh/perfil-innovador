@@ -402,27 +402,31 @@ const CPSAssessment = () => {
     setShowResults(false);
   };
 
-  const downloadResults = async () => {
-    const element = document.getElementById('results-container');
-    if (element) {
-      try {
-        const html2canvas = (await import('html2canvas')).default;
-        const canvas = await html2canvas(element, {
-          backgroundColor: '#1a1a1a',
-          scale: 2,
-          useCORS: true,
-          allowTaint: true
-        });
-        const link = document.createElement('a');
-        link.download = `perfil-innovador-${userData.nombre.replace(/\s+/g, '-')}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      } catch (error) {
-        console.error('Error al generar la imagen:', error);
-        alert('Error al generar la imagen. Inténtalo de nuevo.');
-      }
+const downloadResults = async () => {
+  const element = document.querySelector('.backdrop-blur-xl.bg-white\\/5'); // Selecciona el contenedor principal
+  if (element) {
+    try {
+      const canvas = await html2canvas(element, {
+        backgroundColor: '#000000',
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        width: element.offsetWidth,
+        height: element.offsetHeight
+      });
+      
+      const link = document.createElement('a');
+      link.download = `perfil-innovador-${userData.nombre.replace(/\s+/g, '-')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (error) {
+      console.error('Error al generar la imagen:', error);
+      alert('Error al generar la imagen. Inténtalo de nuevo.');
     }
-  };
+  }
+};
+  
 
   const SpiderChart = ({ data }) => {
     const size = 364;

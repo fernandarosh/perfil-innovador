@@ -433,13 +433,20 @@ const { data, error } = await supabase
       Evaluación: 0
     };
 
-    questions.forEach(question => {
-      const questionResponses = responses[question.id] || {};
-      question.options.forEach((option, index) => {
-        const rating = questionResponses[index] || 0;
-        totals[option.dimension] += rating;
-      });
+// ✅ SOLO usar las preguntas específicas del método CPS
+const questionsToUse = [3, 4, 6, 7, 8, 9, 11, 12, 13, 15, 16, 18];
+
+// ✅ FILTRAR: Solo sumar las preguntas especificadas
+questionsToUse.forEach(questionId => {
+  const question = questions.find(q => q.id === questionId);
+  if (question) {
+    const questionResponses = responses[questionId] || {};
+    question.options.forEach((option, index) => {
+      const rating = questionResponses[index] || 0;
+      totals[option.dimension] += rating;
     });
+  }
+});
 
     const cuadrantes = {
       'Generador': totals.Experiencia + totals.Ideación,
@@ -448,10 +455,12 @@ const { data, error } = await supabase
       'Implementador': totals.Evaluación + totals.Experiencia
     };
 
-    const porcentajes = {};
-    Object.keys(cuadrantes).forEach(cuadrante => {
-      porcentajes[cuadrante] = ((cuadrantes[cuadrante] / 120) / 2) * 100;
-    });
+// ✅ FÓRMULA CORREGIDA: Calcular porcentajes basados en el total real
+const totalCuadrantes = Object.values(cuadrantes).reduce((a, b) => a + b, 0);
+const porcentajes = {};
+Object.keys(cuadrantes).forEach(cuadrante => {
+  porcentajes[cuadrante] = (cuadrantes[cuadrante] / totalCuadrantes) * 100;
+});
 
     const dominantStyle = Object.keys(porcentajes).find(
       key => porcentajes[key] === Math.max(...Object.values(porcentajes))

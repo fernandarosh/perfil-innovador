@@ -930,6 +930,20 @@ if (showResults) {
                 Nueva evaluación
               </button>
             </div>
+            {/* Banner de Técnicas Creativas */}
+  <div className="mt-6 sm:mt-8">
+    <p className="text-sm sm:text-base text-white/80 backdrop-blur-sm bg-white/5 border border-white/20 rounded-xl px-4 sm:px-6 py-3 sm:py-4 mx-auto max-w-md sm:max-w-lg">
+      ✨ Continúa tu desarrollo con nuestro{' '}
+      <a 
+        href="https://blackschool.rocks/tecnicas-creativas/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-blue-300 hover:text-blue-200 underline font-medium transition-colors duration-200"
+      >
+        Taller de Técnicas Creativas
+      </a>
+    </p>
+  </div>      
           </div>
         </div>
       </div>

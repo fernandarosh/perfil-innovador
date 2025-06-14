@@ -997,40 +997,40 @@ const CPSAssessment = () => {
           <div className="absolute bottom-40 right-10 w-20 h-20 border border-white/5 rotate-12"></div>
         </div>
 
-        <div className="relative z-10 max-w-2xl mx-auto p-4 sm:p-8">
-          <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-6 sm:p-12 shadow-2xl">
-            <div className="text-center mb-8 sm:mb-12">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
-                <User className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+        <div className="relative z-10 w-full max-w-4xl mx-auto p-4 sm:p-8">
+          <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-8 sm:p-12 shadow-2xl min-h-[600px]">
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-8 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
+                <User className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
               </div>
-              <h1 className="text-2xl sm:text-4xl font-thin text-white mb-4 tracking-wide">Perfil innovador</h1>
-              <p className="text-white/70 text-base sm:text-lg font-light">Descubre tu estilo único de resolución de problemas</p>
+              <h1 className="text-3xl sm:text-5xl font-thin text-white mb-6 tracking-wide">Perfil innovador</h1>
+              <p className="text-white/70 text-lg sm:text-xl font-light max-w-2xl mx-auto">Descubre tu estilo único de resolución de problemas</p>
             </div>
 
-            <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-6 sm:space-y-8 max-w-2xl mx-auto">
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">Nombre completo *</label>
+                <label className="block text-white/80 text-base font-light mb-3">Nombre completo *</label>
                 <div className="relative">
-                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <User className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white/40" />
                   <input
                     type="text"
                     value={userData.nombre || ''}
                     onChange={(e) => handleUserDataChange('nombre', e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 sm:py-4 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white placeholder-white/40 focus:border-white/40 focus:outline-none transition-colors"
+                    className="w-full pl-16 pr-6 py-4 sm:py-5 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white text-lg placeholder-white/40 focus:border-white/40 focus:outline-none transition-colors"
                     placeholder="Tu nombre completo"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">Email *</label>
+                <label className="block text-white/80 text-base font-light mb-3">Email *</label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Mail className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white/40" />
                   <input
                     type="email"
                     value={userData.email || ''}
                     onChange={(e) => handleUserDataChange('email', e.target.value)}
-                    className={`w-full pl-12 pr-4 py-3 sm:py-4 backdrop-blur-sm bg-white/5 border rounded-2xl text-white placeholder-white/40 focus:outline-none transition-colors ${
+                    className={`w-full pl-16 pr-6 py-4 sm:py-5 backdrop-blur-sm bg-white/5 border rounded-2xl text-white text-lg placeholder-white/40 focus:outline-none transition-colors ${
                       userData.email && !isValidEmail(userData.email) 
                         ? 'border-red-400 focus:border-red-400' 
                         : 'border-white/20 focus:border-white/40'
@@ -1039,19 +1039,19 @@ const CPSAssessment = () => {
                   />
                 </div>
                 {userData.email && !isValidEmail(userData.email) && (
-                  <p className="text-red-400 text-xs mt-1">Por favor ingresa un email válido</p>
+                  <p className="text-red-400 text-sm mt-2">Por favor ingresa un email válido</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">Teléfono móvil *</label>
+                <label className="block text-white/80 text-base font-light mb-3">Teléfono móvil *</label>
                 <div className="relative">
-                  <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Phone className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white/40" />
                   <input
                     type="tel"
                     value={userData.telefono || ''}
                     onChange={(e) => handleUserDataChange('telefono', e.target.value)}
-                    className={`w-full pl-12 pr-4 py-3 sm:py-4 backdrop-blur-sm bg-white/5 border rounded-2xl text-white placeholder-white/40 focus:outline-none transition-colors ${
+                    className={`w-full pl-16 pr-6 py-4 sm:py-5 backdrop-blur-sm bg-white/5 border rounded-2xl text-white text-lg placeholder-white/40 focus:outline-none transition-colors ${
                       userData.telefono && !isValidPhone(userData.telefono) 
                         ? 'border-red-400 focus:border-red-400' 
                         : 'border-white/20 focus:border-white/40'
@@ -1060,46 +1060,46 @@ const CPSAssessment = () => {
                   />
                 </div>
                 {userData.telefono && !isValidPhone(userData.telefono) && (
-                  <p className="text-red-400 text-xs mt-1">Por favor ingresa un teléfono válido (8-15 dígitos)</p>
+                  <p className="text-red-400 text-sm mt-2">Por favor ingresa un teléfono válido (8-15 dígitos)</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">Empresa/Organización *</label>
+                <label className="block text-white/80 text-base font-light mb-3">Empresa/Organización *</label>
                 <div className="relative">
-                  <Building className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Building className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white/40" />
                   <input
                     type="text"
                     value={userData.empresa || ''}
                     onChange={(e) => handleUserDataChange('empresa', e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 sm:py-4 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white placeholder-white/40 focus:border-white/40 focus:outline-none transition-colors"
+                    className="w-full pl-16 pr-6 py-4 sm:py-5 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white text-lg placeholder-white/40 focus:border-white/40 focus:outline-none transition-colors"
                     placeholder="Nombre de tu empresa"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">Cargo/Puesto *</label>
+                <label className="block text-white/80 text-base font-light mb-3">Cargo/Puesto *</label>
                 <div className="relative">
-                  <Briefcase className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Briefcase className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white/40" />
                   <input
                     type="text"
                     value={userData.cargo || ''}
                     onChange={(e) => handleUserDataChange('cargo', e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 sm:py-4 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white placeholder-white/40 focus:border-white/40 focus:outline-none transition-colors"
+                    className="w-full pl-16 pr-6 py-4 sm:py-5 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white text-lg placeholder-white/40 focus:border-white/40 focus:outline-none transition-colors"
                     placeholder="Tu puesto actual"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">País *</label>
+                <label className="block text-white/80 text-base font-light mb-3">País *</label>
                 <div className="relative">
-                  <Globe className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <Globe className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white/40" />
                   <select
                     value={userData.pais || ''}
                     onChange={(e) => handleUserDataChange('pais', e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 sm:py-4 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white focus:border-white/40 focus:outline-none transition-colors appearance-none cursor-pointer"
+                    className="w-full pl-16 pr-6 py-4 sm:py-5 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white text-lg focus:border-white/40 focus:outline-none transition-colors appearance-none cursor-pointer"
                   >
                     <option value="" className="bg-black">Selecciona tu país</option>
                     {countries.map(country => (
@@ -1109,20 +1109,20 @@ const CPSAssessment = () => {
                 </div>
               </div>
 
-              <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-4 sm:p-6">
-                <div className="flex items-start gap-4">
+              <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6 sm:p-8">
+                <div className="flex items-start gap-5">
                   <input
                     type="checkbox"
                     id="newsletter"
                     checked={userData.newsletter || false}
                     onChange={(e) => handleUserDataChange('newsletter', e.target.checked)}
-                    className="mt-1 w-5 h-5 rounded border-white/20 bg-white/5 text-white focus:ring-white/20"
+                    className="mt-2 w-6 h-6 rounded border-white/20 bg-white/5 text-white focus:ring-white/20"
                   />
                   <div className="flex-1">
-                    <label htmlFor="newsletter" className="text-white/90 font-light cursor-pointer">
+                    <label htmlFor="newsletter" className="text-white/90 text-base font-light cursor-pointer">
                       Sí, quiero suscribirme a <strong className="font-normal">#Cápsula</strong>
                     </label>
-                    <p className="text-white/60 text-sm mt-1 font-light">
+                    <p className="text-white/60 text-base mt-2 font-light leading-relaxed">
                       Nuestro newsletter quincenal con la mejor curaduría de temas alrededor de creatividad, innovación, diseño, negocios y futuros.
                     </p>
                   </div>
@@ -1130,9 +1130,9 @@ const CPSAssessment = () => {
               </div>
             </div>
 
-            <div className="text-center mt-8 sm:mt-12">
+            <div className="text-center mt-12 sm:mt-16">
               {/* CAPTCHA de Turnstile */}
-              <div className="mb-6 flex justify-center">
+              <div className="mb-8 flex justify-center">
                 <div 
                   className="cf-turnstile" 
                   data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAABhA-P-saUwd8wpl'}
@@ -1144,11 +1144,11 @@ const CPSAssessment = () => {
               <button
                 onClick={startAssessment}
                 disabled={!isRegistrationComplete() || !captchaToken || isLoading}
-                className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-base sm:text-lg tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-xl"
+                className="w-full sm:w-auto px-12 sm:px-16 py-4 sm:py-5 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-lg sm:text-xl tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-xl"
               >
                 {isLoading ? 'Guardando...' : 'Comenzar evaluación'}
               </button>
-              <p className="text-white/50 text-xs mt-4 font-light">
+              <p className="text-white/50 text-sm mt-6 font-light">
                 * Campos obligatorios
               </p>
             </div>

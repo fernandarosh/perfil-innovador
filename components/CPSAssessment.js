@@ -674,7 +674,7 @@ const CPSAssessment = () => {
   );
 };
 
-export default CPSAssessment;alla de registro
+export default CPSAssessment;
   if (currentStep === 'register') {
     return (
       <div className="min-h-screen bg-black text-white relative overflow-hidden">

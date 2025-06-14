@@ -7,24 +7,9 @@ import jsPDF from 'jspdf';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ywtdjwkxgvtntaicksbk.supabase.co';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3dGRqd2t4Z3Z0bnRhaWNrc2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4NjIyNjYsImV4cCI6MjA2NTQzODI2Nn0.OlBckntHtKRGgVAaSpmUtrpxUm3wCMefqftXJd0j-kY';
 const supabase = createClient(supabaseUrl, supabaseKey);
-const [captchaToken, setCaptchaToken] = useState(null);
-
-// Cargar script de Turnstile
-useEffect(() => {
-  const script = document.createElement('script');
-  script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-  script.async = true;
-  script.defer = true;
-  document.head.appendChild(script);
-  
-  return () => {
-    if (document.head.contains(script)) {
-      document.head.removeChild(script);
-    }
-  };
-}, []);
 
 const CPSAssessment = () => {
+  const [captchaToken, setCaptchaToken] = useState(null);
   const [currentStep, setCurrentStep] = useState('register');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState({});
@@ -33,6 +18,28 @@ const CPSAssessment = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [hoveredTooltip, setHoveredTooltip] = useState(null);
+
+  // Cargar script de Turnstile
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+    
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, []);
+
+  // Función callback para Turnstile
+  window.onTurnstileSuccess = function(token) {
+    setCaptchaToken(token);
+  };
+
+  // ... aquí continúa el resto de tu código (países, preguntas, funciones, etc.)
 
   const questions = [
     {

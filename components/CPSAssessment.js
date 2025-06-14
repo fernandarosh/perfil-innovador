@@ -1,4 +1,18 @@
-'use client';
+const resetAssessment = () => {
+    setCurrentStep('form');
+    setUserData({
+      nombre: '',
+      email: '',
+      telefono: '',
+      empresa: '',
+      cargo: '',
+      pais: '',
+      newsletter: false
+    });
+    setCurrentQuestion(0);
+    setAnswers([]);
+    setResults(null);
+  };'use client';
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Info, CheckCircle2, User, Mail, Building, Briefcase, Globe, Phone } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';

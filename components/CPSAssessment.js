@@ -135,6 +135,93 @@ const CPSAssessment = () => {
     'Nicaragua', 'Costa Rica', 'Panamá', 'República Dominicana', 'Cuba', 'Puerto Rico', 'Otro'
   ];
 
+  const profileDescriptions = {
+    'Generador': {
+      title: 'Generador (Concreto + Activo)',
+      characteristics: [
+        'Orientado a la acción y la experiencia directa',
+        'Aprende haciendo y experimentando',
+        'Busca oportunidades y nuevas experiencias',
+        'Prefiere la variedad y el cambio'
+      ],
+      strengths: [
+        'Excelente para iniciar proyectos',
+        'Detecta oportunidades que otros no ven',
+        'Actúa rápidamente ante los problemas',
+        'Aporta energía y entusiasmo'
+      ],
+      tips: [
+        'Canaliza tu energía hacia objetivos específicos',
+        'Busca feedback constante para ajustar tu rumbo',
+        'Colabora con tipos más reflexivos para equilibrar tu impulsividad',
+        'Documenta tus experiencias para aprender de ellas'
+      ]
+    },
+    'Conceptualizador': {
+      title: 'Conceptualizador (Abstracto + Reflexivo)',
+      characteristics: [
+        'Piensa en términos teóricos y conceptuales',
+        'Analiza patrones y relaciones complejas',
+        'Prefiere la reflexión profunda',
+        'Busca entender el "por qué" de las cosas'
+      ],
+      strengths: [
+        'Desarrolla marcos teóricos sólidos',
+        'Identifica patrones ocultos',
+        'Aporta perspectiva estratégica',
+        'Excelente para análisis profundo'
+      ],
+      tips: [
+        'Traduce tus ideas abstractas en términos prácticos',
+        'Busca datos concretos para validar tus teorías',
+        'Colabora con tipos más activos para implementar tus ideas',
+        'Establece plazos para evitar el "análisis paralítico"'
+      ]
+    },
+    'Optimizador': {
+      title: 'Optimizador (Abstracto + Activo)',
+      characteristics: [
+        'Enfocado en mejorar y perfeccionar',
+        'Busca eficiencia y resultados',
+        'Orientado a objetivos y resultados',
+        'Prefiere soluciones probadas y efectivas'
+      ],
+      strengths: [
+        'Excelente para implementar soluciones',
+        'Optimiza procesos y sistemas',
+        'Logra resultados consistentes',
+        'Aporta disciplina y estructura'
+      ],
+      tips: [
+        'Mantente abierto a enfoques innovadores',
+        'No te limites solo a soluciones conocidas',
+        'Balancea la eficiencia con la creatividad',
+        'Involucra a otros tipos para generar nuevas ideas'
+      ]
+    },
+    'Implementador': {
+      title: 'Implementador (Concreto + Reflexivo)',
+      characteristics: [
+        'Enfocado en la aplicación práctica',
+        'Evalúa cuidadosamente antes de actuar',
+        'Busca soluciones factibles y realistas',
+        'Prefiere la planificación detallada'
+      ],
+      strengths: [
+        'Excelente para ejecutar planes',
+        'Evalúa riesgos cuidadosamente',
+        'Aporta estabilidad y confiabilidad',
+        'Asegura que las ideas sean viables'
+      ],
+      tips: [
+        'No te paralices en la planificación excesiva',
+        'Acepta que no toda la información estará disponible',
+        'Colabora con generadores para acelerar el proceso',
+        'Experimenta con pequeños prototipos antes de la implementación completa'
+      ]
+    }
+  };
+
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -315,6 +402,28 @@ const CPSAssessment = () => {
     setShowResults(false);
   };
 
+  const downloadResults = async () => {
+    const element = document.getElementById('results-container');
+    if (element) {
+      try {
+        const html2canvas = (await import('html2canvas')).default;
+        const canvas = await html2canvas(element, {
+          backgroundColor: '#1a1a1a',
+          scale: 2,
+          useCORS: true,
+          allowTaint: true
+        });
+        const link = document.createElement('a');
+        link.download = `perfil-innovador-${userData.nombre.replace(/\s+/g, '-')}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (error) {
+        console.error('Error al generar la imagen:', error);
+        alert('Error al generar la imagen. Inténtalo de nuevo.');
+      }
+    }
+  };
+
   const SpiderChart = ({ data }) => {
     const size = 364;
     const center = size / 2;
@@ -450,98 +559,116 @@ const CPSAssessment = () => {
     );
 
     return (
-      <div className="min-h-screen bg-black text-white relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-32 h-32 border border-white/10 rounded-full"></div>
-          <div className="absolute top-40 right-32 w-24 h-24 border border-white/5 rotate-45"></div>
-          <div className="absolute bottom-32 left-1/4 w-40 h-40 border border-white/5 rounded-full"></div>
-          <div className="absolute bottom-20 right-20 w-20 h-20 border border-white/10 rotate-12"></div>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
+        <div id="results-container" className="max-w-4xl w-full bg-gray-900 rounded-2xl shadow-2xl p-8">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 mx-auto mb-4 bg-green-600 rounded-full flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold text-white mb-2">Evaluación completada</h1>
+            <p className="text-gray-400">Tu perfil innovador</p>
+          </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto p-8">
-          <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-12 shadow-2xl">
-            <div className="text-center mb-12">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
-                <CheckCircle2 className="w-10 h-10 text-white" />
-              </div>
-              <h1 className="text-4xl font-thin text-white mb-4 tracking-wide">Evaluación completada</h1>
-              <p className="text-white/70 text-lg font-light">Tu perfil innovador</p>
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <div className="order-2 lg:order-1">
+              <SpiderChart data={showResults.porcentajes} />
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="flex flex-col items-center">
-                <SpiderChart data={showResults.porcentajes} />
-              </div>
+            <div className="order-1 lg:order-2 space-y-6">
+              <h2 className="text-2xl font-bold text-white mb-6">Perfil detallado</h2>
+              
+              {Object.entries(showResults.porcentajes).map(([cuadrante, porcentaje]) => (
+                <div key={cuadrante} className="bg-gray-800 rounded-xl p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                      <span className="text-white font-medium">
+                        {cuadrante}
+                        {cuadrante === dominantStyle && <span className="ml-2">⭐</span>}
+                      </span>
+                    </div>
+                    <span className="text-white font-bold">{porcentaje.toFixed(1)}%</span>
+                  </div>
+                  <div className="w-full bg-gray-700 rounded-full h-2">
+                    <div 
+                      className="bg-purple-500 h-2 rounded-full transition-all duration-1000"
+                      style={{ width: `${porcentaje}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
 
-              <div className="space-y-8">
-                <h2 className="text-2xl font-thin text-white mb-8 tracking-wide">Perfil detallado</h2>
-                {Object.entries(showResults.porcentajes).map(([cuadrante, porcentaje], index) => (
-                  <div key={cuadrante} className="group">
-                    <div className={`backdrop-blur-sm rounded-2xl border transition-all duration-300 ${
-                      cuadrante === dominantStyle 
-                        ? 'bg-white/10 border-white/30 shadow-lg' 
-                        : 'bg-white/5 border-white/10 hover:border-white/20'
-                    }`}>
-                      <div className="p-6">
-                        <div className="flex justify-between items-center mb-4">
-                          <div className="flex items-center gap-4">
-                            <div className={`w-4 h-4 rounded-full ${
-                              index === 0 ? 'bg-white' : 
-                              index === 1 ? 'bg-white/75' : 
-                              index === 2 ? 'bg-white/50' : 'bg-white/25'
-                            }`}></div>
-                            <span className={`text-xl font-light tracking-wide ${
-                              cuadrante === dominantStyle ? 'text-white' : 'text-white/80'
-                            }`}>
-                              {cuadrante}
-                              {cuadrante === dominantStyle && <span className="ml-2 text-2xl">⭐</span>}
-                            </span>
-                          </div>
-                          <span className={`text-2xl font-thin tracking-wider ${
-                            cuadrante === dominantStyle ? 'text-white' : 'text-white/70'
-                          }`}>
-                            {porcentaje.toFixed(1)}%
-                          </span>
-                        </div>
-                        
-                        <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full transition-all duration-1000 ease-out ${
-                              cuadrante === dominantStyle 
-                                ? 'bg-gradient-to-r from-white to-white/80' 
-                                : 'bg-gradient-to-r from-white/60 to-white/40'
-                            }`}
-                            style={{ 
-                              width: `${porcentaje}%`,
-                              animationDelay: `${index * 200}ms`
-                            }}
-                          ></div>
-                        </div>
-                      </div>
+              <div className="mt-8 bg-gray-800 rounded-xl p-6">
+                <h3 className="text-xl font-semibold text-white mb-2">Estilo dominante</h3>
+                <div className="text-2xl font-bold text-purple-400 mb-2">{dominantStyle}</div>
+                <div className="text-gray-300 text-sm">
+                  {(maxPercentage).toFixed(1)}% de preferencia hacia este perfil innovador
+                </div>
+                
+                <div className="mt-6 space-y-4">
+                  <div className="border-l-4 border-purple-400 pl-4">
+                    <h4 className="text-lg font-semibold text-white mb-3">
+                      {profileDescriptions[dominantStyle]?.title}
+                    </h4>
+                    
+                    <div className="mb-4">
+                      <h5 className="text-purple-300 font-medium mb-2">Características:</h5>
+                      <ul className="text-gray-300 text-sm space-y-1">
+                        {profileDescriptions[dominantStyle]?.characteristics.map((char, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="text-purple-400 mr-2">•</span>
+                            {char}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div className="mb-4">
+                      <h5 className="text-green-300 font-medium mb-2">Fortalezas:</h5>
+                      <ul className="text-gray-300 text-sm space-y-1">
+                        {profileDescriptions[dominantStyle]?.strengths.map((strength, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="text-green-400 mr-2">•</span>
+                            {strength}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h5 className="text-yellow-300 font-medium mb-2">Consejos:</h5>
+                      <ul className="text-gray-300 text-sm space-y-1">
+                        {profileDescriptions[dominantStyle]?.tips.map((tip, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="text-yellow-400 mr-2">•</span>
+                            {tip}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                ))}
-
-                <div className="mt-12 backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-8">
-                  <h3 className="text-xl font-light text-white mb-3 tracking-wide">Estilo dominante</h3>
-                  <p className="text-white/90 text-lg">
-                    <strong className="font-normal">{dominantStyle}</strong>
-                  </p>
-                  <p className="text-white/60 text-sm mt-3 font-light">
-                    {showResults.porcentajes[dominantStyle]?.toFixed(1)}% de preferencia hacia este perfil innovador
-                  </p>
                 </div>
               </div>
             </div>
-
-            <div className="text-center mt-16">
-              <button
-                onClick={resetAssessment}
-                className="backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-12 py-4 rounded-2xl font-light text-lg tracking-wide transition-all duration-300 shadow-xl"
-              >
-                Nueva evaluación
-              </button>
-            </div>
+          </div>
+          
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={downloadResults}
+              className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Descargar mis resultados
+            </button>
+            
+            <button
+              onClick={resetAssessment}
+              className="px-8 py-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors duration-200"
+            >
+              Realizar nueva evaluación
+            </button>
           </div>
         </div>
       </div>

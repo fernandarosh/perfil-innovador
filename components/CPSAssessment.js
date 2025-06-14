@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Info, CheckCircle2, User, Mail, Building, Briefcase, Globe, Phone } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import jsPDF from 'jspdf';
-import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ywtdjwkxgvtntaicksbk.supabase.co';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3dGRqd2t4Z3Z0bnRhaWNrc2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4NjIyNjYsImV4cCI6MjA2NTQzODI2Nn0.OlBckntHtKRGgVAaSpmUtrpxUm3wCMefqftXJd0j-kY';
@@ -20,7 +20,7 @@ const CPSAssessment = () => {
   const [showResults, setShowResults] = useState(false);
   const [hoveredTooltip, setHoveredTooltip] = useState(null);
   const [captchaToken, setCaptchaToken] = useState();
-  const captcha = useRef();
+  const turnstileRef = useRef();
 
   const questions = [
     {
@@ -302,8 +302,8 @@ const CPSAssessment = () => {
       setCurrentStep('assessment');
       
       // Reset captcha after successful submission
-      if (captcha.current) {
-        captcha.current.resetCaptcha();
+      if (turnstileRef.current) {
+        turnstileRef.current.reset();
       }
       setCaptchaToken(null);
       
@@ -312,8 +312,8 @@ const CPSAssessment = () => {
       alert(`Error al guardar datos: ${error.message}`);
       
       // Reset captcha on error too
-      if (captcha.current) {
-        captcha.current.resetCaptcha();
+      if (turnstileRef.current) {
+        turnstileRef.current.reset();
       }
       setCaptchaToken(null);
     } finally {
@@ -1076,10 +1076,10 @@ if (showResults) {
                 disabled={!isRegistrationComplete() || isLoading}
                 className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-base sm:text-lg tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-xl"
               >
-                {isLoading ? 'Guardando...' : 'Comenzar evaluación'}
+                {isLoading ? 'Verificando...' : 'Comenzar evaluación'}
               </button>
               <p className="text-white/50 text-xs mt-4 font-light">
-                * Campos obligatorios. Verifica el captcha para continuar.
+                * Campos obligatorios. Protegido por Cloudflare.
               </p>
             </div>
           </div>

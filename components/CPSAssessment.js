@@ -9,6 +9,8 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUz
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 const CPSAssessment = () => {
   const [currentStep, setCurrentStep] = useState('register');
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -255,11 +257,25 @@ const CPSAssessment = () => {
     setIsLoading(true);
     
     try {
-      // Simulamos el guardado sin Supabase
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const userToSave = {
+        nombre: userData.nombre.trim(),
+        email: userData.email.trim().toLowerCase(),
+        telefono: userData.telefono.trim(),
+        empresa: userData.empresa.trim(),
+        cargo: userData.cargo.trim(),
+        pais: userData.pais,
+        newsletter: userData.newsletter || false
+      };
       
-      setUserId('demo-user-id');
-      console.log('Usuario guardado exitosamente:', userData);
+      const { data, error } = await supabase
+        .from('usuarios')
+        .insert([userToSave])
+        .select();
+      
+      if (error) throw error;
+      
+      setUserId(data[0].id);
+      console.log('Usuario guardado exitosamente:', data[0]);
       setCurrentStep('assessment');
       
     } catch (error) {
@@ -348,9 +364,6 @@ const CPSAssessment = () => {
     setIsLoading(true);
     
     try {
-      // Simulamos el guardado de la evaluación
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
       const evaluationToSave = {
         usuario_id: userId,
         respuestas: responses,
@@ -365,7 +378,14 @@ const CPSAssessment = () => {
         estilo_dominante: dominantStyle
       };
 
-      console.log('Evaluación guardada exitosamente:', evaluationToSave);
+      const { data, error } = await supabase
+        .from('evaluaciones')
+        .insert([evaluationToSave])
+        .select();
+
+      if (error) throw error;
+
+      console.log('Evaluación guardada exitosamente:', data[0]);
       setShowResults({ totals, cuadrantes, porcentajes });
       
     } catch (error) {
@@ -385,16 +405,29 @@ const CPSAssessment = () => {
     setShowResults(false);
   };
 
-  const downloadResults = async () => {
-    // Buscar el contenedor principal de los resultados
-    const element = document.querySelector('[data-download-target]');
-    if (!element) {
-      alert('No se pudo encontrar el contenedor de resultados.');
-      return;
-    }
+  // Función auxiliar para envolver texto
+  const wrapText = (ctx, text, maxWidth) => {
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = words[0];
 
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      const width = ctx.measureText(currentLine + " " + word).width;
+      if (width < maxWidth) {
+        currentLine += " " + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    lines.push(currentLine);
+    return lines;
+  };
+
+  const downloadResults = async () => {
     try {
-      // Crear un canvas temporal para simular html2canvas
+      // Crear un canvas para generar la imagen
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       
@@ -408,7 +441,7 @@ const CPSAssessment = () => {
       
       // Título
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 48px Arial';
+      ctx.font = 'bold 48px Arial, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('Mi Perfil Innovador', canvas.width / 2, 100);
       
@@ -419,15 +452,15 @@ const CPSAssessment = () => {
       );
       
       // Estilo dominante
-      ctx.font = 'bold 36px Arial';
+      ctx.font = 'bold 36px Arial, sans-serif';
       ctx.fillText(dominantStyle, canvas.width / 2, 180);
       
-      ctx.font = '24px Arial';
+      ctx.font = '24px Arial, sans-serif';
       ctx.fillText(`${showResults.porcentajes[dominantStyle]?.toFixed(1)}% de preferencia`, canvas.width / 2, 220);
       
       // Resultados por cuadrante
       let y = 300;
-      ctx.font = '28px Arial';
+      ctx.font = '28px Arial, sans-serif';
       ctx.textAlign = 'left';
       
       Object.entries(showResults.porcentajes).forEach(([cuadrante, porcentaje]) => {
@@ -455,16 +488,16 @@ const CPSAssessment = () => {
       if (profileDescriptions[dominantStyle]) {
         y += 50;
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 24px Arial';
+        ctx.font = 'bold 24px Arial, sans-serif';
         ctx.fillText('Características principales:', 100, y);
         
         y += 40;
-        ctx.font = '18px Arial';
+        ctx.font = '18px Arial, sans-serif';
         ctx.fillStyle = '#cccccc';
         
         profileDescriptions[dominantStyle].characteristics.forEach((char, index) => {
           if (index < 4) { // Mostrar solo las primeras 4 para que quepa
-            const lines = this.wrapText(ctx, `• ${char}`, 100, 900);
+            const lines = wrapText(ctx, `• ${char}`, 900);
             lines.forEach(line => {
               ctx.fillText(line, 100, y);
               y += 30;
@@ -476,7 +509,7 @@ const CPSAssessment = () => {
       // Información adicional
       y += 50;
       ctx.fillStyle = '#888888';
-      ctx.font = '16px Arial';
+      ctx.font = '16px Arial, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(`Generado el ${new Date().toLocaleDateString('es-ES')}`, canvas.width / 2, y);
       ctx.fillText('Perfil Innovador - Evaluación CPS', canvas.width / 2, y + 30);
@@ -485,32 +518,14 @@ const CPSAssessment = () => {
       const link = document.createElement('a');
       link.download = `perfil-innovador-${userData.nombre?.replace(/\s+/g, '-') || 'usuario'}.png`;
       link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
       
     } catch (error) {
       console.error('Error al generar la imagen:', error);
       alert('Error al generar la imagen. Inténtalo de nuevo.');
     }
-  };
-
-  // Función auxiliar para envolver texto
-  const wrapText = (ctx, text, x, maxWidth) => {
-    const words = text.split(' ');
-    const lines = [];
-    let currentLine = words[0];
-
-    for (let i = 1; i < words.length; i++) {
-      const word = words[i];
-      const width = ctx.measureText(currentLine + " " + word).width;
-      if (width < maxWidth) {
-        currentLine += " " + word;
-      } else {
-        lines.push(currentLine);
-        currentLine = word;
-      }
-    }
-    lines.push(currentLine);
-    return lines;
   };
 
   const SpiderChart = ({ data }) => {

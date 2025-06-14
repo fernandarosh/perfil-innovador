@@ -20,26 +20,24 @@ const CPSAssessment = () => {
   const [hoveredTooltip, setHoveredTooltip] = useState(null);
 
   // Cargar script de Turnstile
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-    
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
-      }
-    };
-  }, []);
-
+useEffect(() => {
+  const script = document.createElement('script');
+  script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+  
   // Función callback para Turnstile
   window.onTurnstileSuccess = function(token) {
     setCaptchaToken(token);
   };
-
-  // ... aquí continúa el resto de tu código (países, preguntas, funciones, etc.)
+  
+  return () => {
+    if (document.head.contains(script)) {
+      document.head.removeChild(script);
+    }
+  };
+}, []);
 
   const questions = [
     {
@@ -291,10 +289,7 @@ const CPSAssessment = () => {
     
     return hasAllFields && validEmail && validPhone;
   };
-// Función callback para Turnstile
-window.onTurnstileSuccess = function(token) {
-  setCaptchaToken(token);
-};
+
 const startAssessment = async () => {
   if (!isRegistrationComplete() || !captchaToken) {
     alert('Por favor completa el CAPTCHA');

@@ -386,13 +386,131 @@ const CPSAssessment = () => {
   };
 
   const downloadResults = async () => {
+    // Buscar el contenedor principal de los resultados
+    const element = document.querySelector('[data-download-target]');
+    if (!element) {
+      alert('No se pudo encontrar el contenedor de resultados.');
+      return;
+    }
+
     try {
-      // Función simulada para la descarga
-      alert('Función de descarga disponible. En la versión completa se generaría una imagen PNG con los resultados.');
+      // Crear un canvas temporal para simular html2canvas
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Configurar el canvas
+      canvas.width = 1200;
+      canvas.height = 1600;
+      
+      // Fondo negro
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Título
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 48px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Mi Perfil Innovador', canvas.width / 2, 100);
+      
+      // Obtener el estilo dominante
+      const maxPercentage = Math.max(...Object.values(showResults.porcentajes));
+      const dominantStyle = Object.keys(showResults.porcentajes).find(
+        key => showResults.porcentajes[key] === maxPercentage
+      );
+      
+      // Estilo dominante
+      ctx.font = 'bold 36px Arial';
+      ctx.fillText(dominantStyle, canvas.width / 2, 180);
+      
+      ctx.font = '24px Arial';
+      ctx.fillText(`${showResults.porcentajes[dominantStyle]?.toFixed(1)}% de preferencia`, canvas.width / 2, 220);
+      
+      // Resultados por cuadrante
+      let y = 300;
+      ctx.font = '28px Arial';
+      ctx.textAlign = 'left';
+      
+      Object.entries(showResults.porcentajes).forEach(([cuadrante, porcentaje]) => {
+        ctx.fillStyle = cuadrante === dominantStyle ? '#ffffff' : '#cccccc';
+        ctx.fillText(`${cuadrante}: ${porcentaje.toFixed(1)}%`, 100, y);
+        
+        // Barra de progreso
+        const barWidth = 400;
+        const barHeight = 20;
+        const barX = 500;
+        const barY = y - 15;
+        
+        // Fondo de la barra
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.fillRect(barX, barY, barWidth, barHeight);
+        
+        // Progreso de la barra
+        ctx.fillStyle = cuadrante === dominantStyle ? '#ffffff' : 'rgba(255, 255, 255, 0.6)';
+        ctx.fillRect(barX, barY, (porcentaje / 100) * barWidth, barHeight);
+        
+        y += 80;
+      });
+      
+      // Información del perfil dominante
+      if (profileDescriptions[dominantStyle]) {
+        y += 50;
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 24px Arial';
+        ctx.fillText('Características principales:', 100, y);
+        
+        y += 40;
+        ctx.font = '18px Arial';
+        ctx.fillStyle = '#cccccc';
+        
+        profileDescriptions[dominantStyle].characteristics.forEach((char, index) => {
+          if (index < 4) { // Mostrar solo las primeras 4 para que quepa
+            const lines = this.wrapText(ctx, `• ${char}`, 100, 900);
+            lines.forEach(line => {
+              ctx.fillText(line, 100, y);
+              y += 30;
+            });
+          }
+        });
+      }
+      
+      // Información adicional
+      y += 50;
+      ctx.fillStyle = '#888888';
+      ctx.font = '16px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(`Generado el ${new Date().toLocaleDateString('es-ES')}`, canvas.width / 2, y);
+      ctx.fillText('Perfil Innovador - Evaluación CPS', canvas.width / 2, y + 30);
+      
+      // Descargar la imagen
+      const link = document.createElement('a');
+      link.download = `perfil-innovador-${userData.nombre?.replace(/\s+/g, '-') || 'usuario'}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
     } catch (error) {
       console.error('Error al generar la imagen:', error);
       alert('Error al generar la imagen. Inténtalo de nuevo.');
     }
+  };
+
+  // Función auxiliar para envolver texto
+  const wrapText = (ctx, text, x, maxWidth) => {
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      const word = words[i];
+      const width = ctx.measureText(currentLine + " " + word).width;
+      if (width < maxWidth) {
+        currentLine += " " + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+    lines.push(currentLine);
+    return lines;
   };
 
   const SpiderChart = ({ data }) => {
@@ -539,7 +657,7 @@ const CPSAssessment = () => {
         </div>
 
         <div className="relative z-10 max-w-6xl mx-auto p-4 sm:p-8">
-          <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-6 sm:p-12 shadow-2xl">
+          <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-6 sm:p-12 shadow-2xl" data-download-target>
             <div className="text-center mb-8 sm:mb-12">
               <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
                 <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white" />

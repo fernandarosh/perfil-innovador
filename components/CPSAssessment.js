@@ -18,122 +18,122 @@ const CPSAssessment = () => {
   const [showResults, setShowResults] = useState(false);
   const [hoveredTooltip, setHoveredTooltip] = useState(null);
 
-  // Datos de las preguntas extraídos del archivo Excel
+  // Datos de las preguntas extraÃ­dos del archivo Excel
   const questions = [
     {
       id: 1,
       options: [
         { text: "Alerta", tooltip: "Estar atento y vigilante ante los detalles del problema", dimension: "Experiencia" },
-        { text: "Equilibrado", tooltip: "Mantener estabilidad entre diferentes perspectivas", dimension: "Ideación" },
-        { text: "Listo", tooltip: "Preparado mentalmente para abordar desafíos", dimension: "Pensamiento" },
-        { text: "Ansioso", tooltip: "Sentir urgencia por resolver el problema rápidamente", dimension: "Evaluación" }
+        { text: "Equilibrado", tooltip: "Mantener estabilidad entre diferentes perspectivas", dimension: "IdeaciÃ³n" },
+        { text: "Listo", tooltip: "Preparado mentalmente para abordar desafÃ­os", dimension: "Pensamiento" },
+        { text: "Ansioso", tooltip: "Sentir urgencia por resolver el problema rÃ¡pidamente", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 2,
       options: [
         { text: "Paciente", tooltip: "Tomarse el tiempo necesario para entender completamente", dimension: "Experiencia" },
-        { text: "Diligente", tooltip: "Trabajar con cuidado y persistencia en los detalles", dimension: "Ideación" },
+        { text: "Diligente", tooltip: "Trabajar con cuidado y persistencia en los detalles", dimension: "IdeaciÃ³n" },
         { text: "Contundente", tooltip: "Ser claro y directo en las conclusiones", dimension: "Pensamiento" },
-        { text: "Preparado", tooltip: "Tener todo listo antes de actuar", dimension: "Evaluación" }
+        { text: "Preparado", tooltip: "Tener todo listo antes de actuar", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 3,
       options: [
-        { text: "Activo", tooltip: "Preferir la acción directa y la experimentación", dimension: "Experiencia" },
-        { text: "Ingenuo", tooltip: "Abordar problemas con mente abierta y sin prejuicios", dimension: "Ideación" },
+        { text: "Activo", tooltip: "Preferir la acciÃ³n directa y la experimentaciÃ³n", dimension: "Experiencia" },
+        { text: "Ingenuo", tooltip: "Abordar problemas con mente abierta y sin prejuicios", dimension: "IdeaciÃ³n" },
         { text: "Observador", tooltip: "Analizar cuidadosamente antes de actuar", dimension: "Pensamiento" },
-        { text: "Realista", tooltip: "Enfocarse en lo que es práctico y alcanzable", dimension: "Evaluación" }
+        { text: "Realista", tooltip: "Enfocarse en lo que es prÃ¡ctico y alcanzable", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 4,
       options: [
-        { text: "Experimental", tooltip: "Probar diferentes enfoques para ver qué funciona", dimension: "Experiencia" },
-        { text: "Diverso", tooltip: "Explorar múltiples alternativas y posibilidades", dimension: "Ideación" },
+        { text: "Experimental", tooltip: "Probar diferentes enfoques para ver quÃ© funciona", dimension: "Experiencia" },
+        { text: "Diverso", tooltip: "Explorar mÃºltiples alternativas y posibilidades", dimension: "IdeaciÃ³n" },
         { text: "Reflexivo", tooltip: "Tomarse tiempo para reflexionar antes de decidir", dimension: "Pensamiento" },
-        { text: "Organizador", tooltip: "Organizar y estructurar la información disponible", dimension: "Evaluación" }
+        { text: "Organizador", tooltip: "Organizar y estructurar la informaciÃ³n disponible", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 5,
       options: [
         { text: "Reservado", tooltip: "Preferir trabajar de manera reflexiva y privada", dimension: "Experiencia" },
-        { text: "Serio", tooltip: "Abordar problemas con formalidad y rigor", dimension: "Ideación" },
+        { text: "Serio", tooltip: "Abordar problemas con formalidad y rigor", dimension: "IdeaciÃ³n" },
         { text: "Gozador", tooltip: "Disfrutar del proceso de resolver problemas", dimension: "Pensamiento" },
-        { text: "Juguetón", tooltip: "Usar creatividad y humor en la resolución", dimension: "Evaluación" }
+        { text: "JuguetÃ³n", tooltip: "Usar creatividad y humor en la resoluciÃ³n", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 6,
       options: [
-        { text: "Práctico", tooltip: "Aprender probando diferentes soluciones", dimension: "Experiencia" },
-        { text: "Creativo", tooltip: "Generar múltiples opciones antes de elegir", dimension: "Ideación" },
-        { text: "Analítico", tooltip: "Evaluar cuidadosamente pros y contras", dimension: "Pensamiento" },
-        { text: "Evaluador", tooltip: "Juzgar sistemáticamente las opciones disponibles", dimension: "Evaluación" }
+        { text: "PrÃ¡ctico", tooltip: "Aprender probando diferentes soluciones", dimension: "Experiencia" },
+        { text: "Creativo", tooltip: "Generar mÃºltiples opciones antes de elegir", dimension: "IdeaciÃ³n" },
+        { text: "AnalÃ­tico", tooltip: "Evaluar cuidadosamente pros y contras", dimension: "Pensamiento" },
+        { text: "Evaluador", tooltip: "Juzgar sistemÃ¡ticamente las opciones disponibles", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 7,
       options: [
-        { text: "Resolutivo", tooltip: "Poner en práctica las soluciones rápidamente", dimension: "Experiencia" },
-        { text: "Divergente", tooltip: "Expandir las posibilidades y pensar 'fuera de la caja'", dimension: "Ideación" },
+        { text: "Resolutivo", tooltip: "Poner en prÃ¡ctica las soluciones rÃ¡pidamente", dimension: "Experiencia" },
+        { text: "Divergente", tooltip: "Expandir las posibilidades y pensar 'fuera de la caja'", dimension: "IdeaciÃ³n" },
         { text: "Abstracto", tooltip: "Encontrar patrones y conceptos generales", dimension: "Pensamiento" },
-        { text: "Convergente", tooltip: "Enfocar las ideas hacia una solución específica", dimension: "Evaluación" }
+        { text: "Convergente", tooltip: "Enfocar las ideas hacia una soluciÃ³n especÃ­fica", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 8,
       options: [
         { text: "Directo", tooltip: "Ir al grano sin rodeos innecesarios", dimension: "Experiencia" },
-        { text: "Posibilidades", tooltip: "Explorar todo el potencial de las situaciones", dimension: "Ideación" },
-        { text: "Conceptual", tooltip: "Trabajar con ideas y teorías abstractas", dimension: "Pensamiento" },
-        { text: "Realidades", tooltip: "Mantenerse conectado con hechos concretos", dimension: "Evaluación" }
+        { text: "Posibilidades", tooltip: "Explorar todo el potencial de las situaciones", dimension: "IdeaciÃ³n" },
+        { text: "Conceptual", tooltip: "Trabajar con ideas y teorÃ­as abstractas", dimension: "Pensamiento" },
+        { text: "Realidades", tooltip: "Mantenerse conectado con hechos concretos", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 9,
       options: [
         { text: "Involucrado", tooltip: "Participar activamente en el proceso", dimension: "Experiencia" },
-        { text: "Cambiar Perspectivas", tooltip: "Ver el problema desde diferentes ángulos", dimension: "Ideación" },
-        { text: "Teórico", tooltip: "Aplicar marcos conceptuales y modelos", dimension: "Pensamiento" },
-        { text: "Enfocado", tooltip: "Concentrarse intensamente en objetivos específicos", dimension: "Evaluación" }
+        { text: "Cambiar Perspectivas", tooltip: "Ver el problema desde diferentes Ã¡ngulos", dimension: "IdeaciÃ³n" },
+        { text: "TeÃ³rico", tooltip: "Aplicar marcos conceptuales y modelos", dimension: "Pensamiento" },
+        { text: "Enfocado", tooltip: "Concentrarse intensamente en objetivos especÃ­ficos", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 10,
       options: [
         { text: "Silencioso", tooltip: "Reflexionar internamente antes de compartir", dimension: "Experiencia" },
-        { text: "Confiable", tooltip: "Ser consistente y digno de confianza", dimension: "Ideación" },
+        { text: "Confiable", tooltip: "Ser consistente y digno de confianza", dimension: "IdeaciÃ³n" },
         { text: "Responsable", tooltip: "Asumir el deber de encontrar soluciones", dimension: "Pensamiento" },
-        { text: "Imaginativo", tooltip: "Usar creatividad para generar ideas originales", dimension: "Evaluación" }
+        { text: "Imaginativo", tooltip: "Usar creatividad para generar ideas originales", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 11,
       options: [
-        { text: "Implementador", tooltip: "Llevar las ideas a la práctica efectivamente", dimension: "Experiencia" },
-        { text: "Visionario", tooltip: "Imaginar claramente las soluciones futuras", dimension: "Ideación" },
+        { text: "Implementador", tooltip: "Llevar las ideas a la prÃ¡ctica efectivamente", dimension: "Experiencia" },
+        { text: "Visionario", tooltip: "Imaginar claramente las soluciones futuras", dimension: "IdeaciÃ³n" },
         { text: "Descriptivo", tooltip: "Explicar detalladamente los problemas y soluciones", dimension: "Pensamiento" },
-        { text: "Selectivo", tooltip: "Elegir las mejores opciones disponibles", dimension: "Evaluación" }
+        { text: "Selectivo", tooltip: "Elegir las mejores opciones disponibles", dimension: "EvaluaciÃ³n" }
       ]
     },
     {
       id: 12,
       options: [
         { text: "Ejecutivo", tooltip: "Realizar las acciones necesarias eficientemente", dimension: "Experiencia" },
-        { text: "Futurista", tooltip: "Pensar en implicaciones y consecuencias a largo plazo", dimension: "Ideación" },
-        { text: "Racional", tooltip: "Usar lógica y razonamiento sistemático", dimension: "Pensamiento" },
-        { text: "Detallista", tooltip: "Prestar atención a aspectos específicos y minuciosos", dimension: "Evaluación" }
+        { text: "Futurista", tooltip: "Pensar en implicaciones y consecuencias a largo plazo", dimension: "IdeaciÃ³n" },
+        { text: "Racional", tooltip: "Usar lÃ³gica y razonamiento sistemÃ¡tico", dimension: "Pensamiento" },
+        { text: "Detallista", tooltip: "Prestar atenciÃ³n a aspectos especÃ­ficos y minuciosos", dimension: "EvaluaciÃ³n" }
       ]
     }
   ];
 
   const countries = [
-    'México', 'Estados Unidos', 'España', 'Colombia', 'Argentina', 'Chile', 'Perú', 'Venezuela', 
+    'MÃ©xico', 'Estados Unidos', 'EspaÃ±a', 'Colombia', 'Argentina', 'Chile', 'PerÃº', 'Venezuela', 
     'Ecuador', 'Guatemala', 'Uruguay', 'Bolivia', 'Paraguay', 'Honduras', 'El Salvador', 
-    'Nicaragua', 'Costa Rica', 'Panamá', 'República Dominicana', 'Cuba', 'Puerto Rico', 'Otro'
+    'Nicaragua', 'Costa Rica', 'PanamÃ¡', 'RepÃºblica Dominicana', 'Cuba', 'Puerto Rico', 'Otro'
   ];
 
   const isValidEmail = (email) => {
@@ -243,9 +243,9 @@ const CPSAssessment = () => {
   const calculateResults = async () => {
     const totals = {
       Experiencia: 0,
-      Ideación: 0,
+      IdeaciÃ³n: 0,
       Pensamiento: 0,
-      Evaluación: 0
+      EvaluaciÃ³n: 0
     };
 
     questions.forEach(question => {
@@ -257,10 +257,10 @@ const CPSAssessment = () => {
     });
 
     const cuadrantes = {
-      'Generador': totals.Experiencia + totals.Ideación,
-      'Conceptualizador': totals.Ideación + totals.Pensamiento,
-      'Optimizador': totals.Pensamiento + totals.Evaluación,
-      'Implementador': totals.Evaluación + totals.Experiencia
+      'Generador': totals.Experiencia + totals.IdeaciÃ³n,
+      'Conceptualizador': totals.IdeaciÃ³n + totals.Pensamiento,
+      'Optimizador': totals.Pensamiento + totals.EvaluaciÃ³n,
+      'Implementador': totals.EvaluaciÃ³n + totals.Experiencia
     };
 
     const porcentajes = {};
@@ -279,9 +279,9 @@ const CPSAssessment = () => {
         usuario_id: userId,
         respuestas: responses,
         experiencia: totals.Experiencia,
-        ideacion: totals.Ideación,
+        ideacion: totals.IdeaciÃ³n,
         pensamiento: totals.Pensamiento,
-        evaluacion: totals.Evaluación,
+        evaluacion: totals.EvaluaciÃ³n,
         generador_pct: porcentajes.Generador,
         conceptualizador_pct: porcentajes.Conceptualizador,
         optimizador_pct: porcentajes.Optimizador,
@@ -296,11 +296,11 @@ const CPSAssessment = () => {
 
       if (error) throw error;
 
-      console.log('Evaluación guardada exitosamente:', data[0]);
+      console.log('EvaluaciÃ³n guardada exitosamente:', data[0]);
       setShowResults({ totals, cuadrantes, porcentajes });
       
     } catch (error) {
-      console.error('Error al guardar evaluación:', error);
+      console.error('Error al guardar evaluaciÃ³n:', error);
       setShowResults({ totals, cuadrantes, porcentajes });
     } finally {
       setIsLoading(false);
@@ -316,7 +316,7 @@ const CPSAssessment = () => {
     setShowResults(false);
   };
 
-  // Componente de gráfico tipo araña/spider
+  // Componente de grÃ¡fico tipo araÃ±a/spider
   const SpiderChart = ({ data }) => {
     const size = 364;
     const center = size / 2;
@@ -469,7 +469,7 @@ const CPSAssessment = () => {
               <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
                 <CheckCircle2 className="w-10 h-10 text-white" />
               </div>
-              <h1 className="text-4xl font-thin text-white mb-4 tracking-wide">Evaluación completada</h1>
+              <h1 className="text-4xl font-thin text-white mb-4 tracking-wide">EvaluaciÃ³n completada</h1>
               <p className="text-white/70 text-lg font-light">Tu perfil innovador</p>
             </div>
 
@@ -499,7 +499,7 @@ const CPSAssessment = () => {
                               cuadrante === dominantStyle ? 'text-white' : 'text-white/80'
                             }`}>
                               {cuadrante}
-                              {cuadrante === dominantStyle && <span className="ml-2 text-2xl">⭐</span>}
+                              {cuadrante === dominantStyle && <span className="ml-2 text-2xl">â­</span>}
                             </span>
                           </div>
                           <span className={`text-2xl font-thin tracking-wider ${
@@ -544,7 +544,7 @@ const CPSAssessment = () => {
                 onClick={resetAssessment}
                 className="backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-12 py-4 rounded-2xl font-light text-lg tracking-wide transition-all duration-300 shadow-xl"
               >
-                Nueva evaluación
+                Nueva evaluaciÃ³n
               </button>
             </div>
           </div>
@@ -571,7 +571,7 @@ const CPSAssessment = () => {
                 <User className="w-10 h-10 text-white" />
               </div>
               <h1 className="text-4xl font-thin text-white mb-4 tracking-wide">Perfil innovador</h1>
-              <p className="text-white/70 text-lg font-light">Descubre tu estilo único de resolución de problemas</p>
+              <p className="text-white/70 text-lg font-light">Descubre tu estilo Ãºnico de resoluciÃ³n de problemas</p>
             </div>
 
             <div className="space-y-6">
@@ -606,12 +606,12 @@ const CPSAssessment = () => {
                   />
                 </div>
                 {userData.email && !isValidEmail(userData.email) && (
-                  <p className="text-red-400 text-xs mt-1">Por favor ingresa un email válido</p>
+                  <p className="text-red-400 text-xs mt-1">Por favor ingresa un email vÃ¡lido</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">Teléfono móvil *</label>
+                <label className="block text-white/80 text-sm font-light mb-2">TelÃ©fono mÃ³vil *</label>
                 <div className="relative">
                   <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
                   <input
@@ -627,12 +627,12 @@ const CPSAssessment = () => {
                   />
                 </div>
                 {userData.telefono && !isValidPhone(userData.telefono) && (
-                  <p className="text-red-400 text-xs mt-1">Por favor ingresa un teléfono válido (8-15 dígitos)</p>
+                  <p className="text-red-400 text-xs mt-1">Por favor ingresa un telÃ©fono vÃ¡lido (8-15 dÃ­gitos)</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">Empresa/Organización *</label>
+                <label className="block text-white/80 text-sm font-light mb-2">Empresa/OrganizaciÃ³n *</label>
                 <div className="relative">
                   <Building className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
                   <input
@@ -660,7 +660,7 @@ const CPSAssessment = () => {
               </div>
 
               <div>
-                <label className="block text-white/80 text-sm font-light mb-2">País *</label>
+                <label className="block text-white/80 text-sm font-light mb-2">PaÃ­s *</label>
                 <div className="relative">
                   <Globe className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
                   <select
@@ -668,7 +668,7 @@ const CPSAssessment = () => {
                     onChange={(e) => handleUserDataChange('pais', e.target.value)}
                     className="w-full pl-12 pr-4 py-4 backdrop-blur-sm bg-white/5 border border-white/20 rounded-2xl text-white focus:border-white/40 focus:outline-none transition-colors appearance-none cursor-pointer"
                   >
-                    <option value="" className="bg-black">Selecciona tu país</option>
+                    <option value="" className="bg-black">Selecciona tu paÃ­s</option>
                     {countries.map(country => (
                       <option key={country} value={country} className="bg-black">{country}</option>
                     ))}
@@ -687,10 +687,10 @@ const CPSAssessment = () => {
                   />
                   <div className="flex-1">
                     <label htmlFor="newsletter" className="text-white/90 font-light cursor-pointer">
-                      Sí, quiero suscribirme a <strong className="font-normal">#Cápsula</strong>
+                      SÃ­, quiero suscribirme a <strong className="font-normal">#CÃ¡psula</strong>
                     </label>
                     <p className="text-white/60 text-sm mt-1 font-light">
-                      Nuestro newsletter quincenal con la mejor curaduría de temas alrededor de creatividad, innovación, diseño, negocios y futuros.
+                      Nuestro newsletter quincenal con la mejor curadurÃ­a de temas alrededor de creatividad, innovaciÃ³n, diseÃ±o, negocios y futuros.
                     </p>
                   </div>
                 </div>
@@ -703,7 +703,7 @@ const CPSAssessment = () => {
                 disabled={!isRegistrationComplete() || isLoading}
                 className="px-12 py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-lg tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-xl"
               >
-                {isLoading ? 'Guardando...' : 'Comenzar evaluación'}
+                {isLoading ? 'Guardando...' : 'Comenzar evaluaciÃ³n'}
               </button>
               <p className="text-white/50 text-xs mt-4 font-light">
                 * Campos obligatorios
@@ -715,7 +715,7 @@ const CPSAssessment = () => {
     );
   }
 
-  // RETURN POR DEFECTO - Pantalla de evaluación
+  // RETURN POR DEFECTO - Pantalla de evaluaciÃ³n
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
       <div className="absolute inset-0">
@@ -744,15 +744,15 @@ const CPSAssessment = () => {
 
             <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-8">
               <p className="text-white/90 text-lg leading-relaxed font-light">
-                Responde honestamente el adjetivo que describa mejor a cómo reaccionas a la hora de resolver problemas. 
+                Responde honestamente el adjetivo que describa mejor a cÃ³mo reaccionas a la hora de resolver problemas. 
                 Por cada fila debes enumerar del <strong className="font-normal text-white">1 al 4</strong>, siendo 
                 <strong className="font-normal text-white"> 4 el mayor puntaje</strong> y 
                 <strong className="font-normal text-white"> 1 el menor</strong>. 
-                Cada número solo se puede usar una vez por fila.
+                Cada nÃºmero solo se puede usar una vez por fila.
               </p>
               <p className="text-white/70 text-base mt-4 font-light flex items-center gap-2">
                 <Info className="w-4 h-4" />
-                Si tienes dudas sobre el significado de algún concepto, pasa el mouse sobre el símbolo de información.
+                Si tienes dudas sobre el significado de algÃºn concepto, pasa el mouse sobre el sÃ­mbolo de informaciÃ³n.
               </p>
             </div>
           </div>
@@ -807,7 +807,7 @@ const CPSAssessment = () => {
             {!isQuestionComplete() && (
               <div className="backdrop-blur-sm bg-white/5 border border-white/20 rounded-xl p-6">
                 <p className="text-white/80 font-light">
-                  💡 Recuerda: Debes usar cada número (1, 2, 3, 4) exactamente una vez en esta pregunta.
+                  ðŸ’¡ Recuerda: Debes usar cada nÃºmero (1, 2, 3, 4) exactamente una vez en esta pregunta.
                 </p>
               </div>
             )}

@@ -693,7 +693,7 @@ const downloadResults = async () => {
   
 
   const SpiderChart = ({ data }) => {
-    const size = 364;
+    const size = 400;
     const center = size / 2;
     const maxRadius = 130;
     const levels = 5;
@@ -775,33 +775,47 @@ const downloadResults = async () => {
             ))}
             
             {dataArray.map(([key, value], index) => {
-              const angle = index * angleStep;
-              const labelPosition = polarToCartesian(angle, maxRadius + 50);
-              return (
-                <g key={key}>
-                  <text
-                    x={labelPosition.x}
-                    y={labelPosition.y}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    className="fill-white text-sm font-light"
-                    style={{ fontSize: '14px' }}
-                  >
-                    {key}
-                  </text>
-                  <text
-                    x={labelPosition.x}
-                    y={labelPosition.y + 16}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    className="fill-white/70 text-xs font-light"
-                    style={{ fontSize: '12px' }}
-                  >
-                    {value.toFixed(1)}%
-                  </text>
-                </g>
-              );
-            })}
+  const angle = index * angleStep;
+  const labelPosition = polarToCartesian(angle, maxRadius + 55);
+  const isDominant = key === dominantStyle;
+  
+  return (
+    <g key={key}>
+      <text
+        x={labelPosition.x}
+        y={labelPosition.y}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        className={`${isDominant ? 'fill-white font-medium' : 'fill-white/70'} text-sm`}
+        style={{ fontSize: isDominant ? '14px' : '13px' }}
+      >
+        {key}
+      </text>
+      <text
+        x={labelPosition.x}
+        y={labelPosition.y + 16}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        className="fill-white/70 text-xs font-light"
+        style={{ fontSize: '12px' }}
+      >
+        {value.toFixed(1)}%
+      </text>
+      {isDominant && (
+        <text
+          x={labelPosition.x}
+          y={labelPosition.y + 30}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          className="fill-white/60 text-xs"
+          style={{ fontSize: '10px' }}
+        >
+          ⭐ Dominante
+        </text>
+      )}
+    </g>
+  );
+})}
           </svg>
         </div>
         
@@ -842,134 +856,96 @@ if (showResults) {
               <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </div>
             <h1 className="text-2xl sm:text-4xl font-thin text-white mb-4 tracking-wide">Evaluación completada</h1>
-            <p className="text-white/70 text-base sm:text-lg font-light">Tu perfil innovador</p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
-            {/* GRÁFICO A LA IZQUIERDA */}
-            <div className="flex flex-col items-center">
-              <SpiderChart data={showResults.porcentajes} />
-            </div>
+{/* Hero section con resultado y gráfico */}
+<div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-12">
+  
+  {/* Lado izquierdo: Resultado principal */}
+  <div className="text-center lg:text-left">
+    <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+      <svg className="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+      </svg>
+      <span className="text-white/80 text-sm tracking-wide">PERFIL DOMINANTE</span>
+    </div>
+    <h2 className="text-4xl sm:text-5xl font-thin text-white mb-2">{dominantStyle}</h2>
+    <p className="text-2xl sm:text-3xl text-white/70 mb-4">{showResults.porcentajes[dominantStyle]?.toFixed(1)}%</p>
+    <p className="text-white/60 leading-relaxed text-lg max-w-md mx-auto lg:mx-0">
+      {profileDescriptions[dominantStyle]?.characteristics[0]}
+    </p>
+    
+    <div className="mt-6 p-4 bg-white/5 rounded-xl border border-white/10 max-w-md mx-auto lg:mx-0">
+      <p className="text-white/80 text-sm">
+        💡 <strong>Insight:</strong> Tu perfil muestra una fuerte tendencia hacia este estilo innovador. 
+        Destacas en las características principales de {dominantStyle.toLowerCase()}.
+      </p>
+    </div>
+  </div>
 
-            {/* PERFIL DETALLADO A LA DERECHA */}
-            <div className="space-y-6 sm:space-y-8">
-              <h2 className="text-xl sm:text-2xl font-thin text-white mb-6 sm:mb-8 tracking-wide">Perfil detallado</h2>
-              {Object.entries(showResults.porcentajes).map(([cuadrante, porcentaje], index) => (
-                <div key={cuadrante} className="group">
-                  <div className={`backdrop-blur-sm rounded-2xl border transition-all duration-300 ${
-                    cuadrante === dominantStyle 
-                      ? 'bg-white/10 border-white/30 shadow-lg' 
-                      : 'bg-white/5 border-white/10 hover:border-white/20'
-                  }`}>
-                    <div className="p-4 sm:p-6">
-                      <div className="flex justify-between items-center mb-4">
-                        <div className="flex items-center gap-3 sm:gap-4">
-                          <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${
-                            index === 0 ? 'bg-white' : 
-                            index === 1 ? 'bg-white/75' : 
-                            index === 2 ? 'bg-white/50' : 'bg-white/25'
-                          }`}></div>
-                          <span className={`text-lg sm:text-xl font-light tracking-wide ${
-                            cuadrante === dominantStyle ? 'text-white' : 'text-white/80'
-                          }`}>
-                            {cuadrante}
-                            {cuadrante === dominantStyle && <span className="ml-2 text-xl sm:text-2xl">⭐</span>}
-                          </span>
-                        </div>
-                        <span className={`text-xl sm:text-2xl font-thin tracking-wider ${
-                          cuadrante === dominantStyle ? 'text-white' : 'text-white/70'
-                        }`}>
-                          {porcentaje.toFixed(1)}%
-                        </span>
-                      </div>
-                      
-                      <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div 
-                          className={`h-full transition-all duration-1000 ease-out ${
-                            cuadrante === dominantStyle 
-                              ? 'bg-gradient-to-r from-white to-white/80' 
-                              : 'bg-gradient-to-r from-white/60 to-white/40'
-                          }`}
-                          style={{ 
-                            width: `${porcentaje}%`,
-                            animationDelay: `${index * 200}ms`
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+  {/* Lado derecho: Gráfico mejorado */}
+  <div className="flex justify-center">
+    <SpiderChart data={showResults.porcentajes} />
+  </div>
+</div>
 
-              <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6 sm:p-8">
-                <h3 className="text-lg sm:text-xl font-light text-white mb-3 tracking-wide">Estilo dominante</h3>
-                <p className="text-white/90 text-base sm:text-lg">
-                  <strong className="font-normal">{dominantStyle}</strong>
-                </p>
-                <p className="text-white/60 text-sm mt-3 font-light">
-                  {showResults.porcentajes[dominantStyle]?.toFixed(1)}% de preferencia hacia este perfil innovador
-                </p>
-              </div>
-            </div>
-          </div>
-
-   {/* SECCIÓN DETALLADA DEL PERFIL DOMINANTE */}
-<div className="mt-12 sm:mt-16">
-  <div className="backdrop-blur-sm bg-white/5 rounded-3xl border border-white/10 p-8 sm:p-12">
-    <div className="border-l-4 border-white/30 pl-6 sm:pl-8">
-      <h3 className="text-2xl sm:text-3xl font-thin text-white mb-4 sm:mb-6 tracking-wide">
-        {profileDescriptions[dominantStyle]?.title}
-      </h3>
-      
-      <div className="grid md:grid-cols-3 gap-8 sm:gap-12">
-        {/* CARACTERÍSTICAS */}
-        <div>
-          <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
-            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-            Características
-          </h4>
-          <ul className="space-y-3 sm:space-y-4">
-            {profileDescriptions[dominantStyle]?.characteristics.map((char, index) => (
-              <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
-                <span className="text-white/40 mt-1 sm:mt-2">•</span>
-                <span className="leading-relaxed">{char}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-        {/* FORTALEZAS */}
-        <div>
-          <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
-            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-            Fortalezas
-          </h4>
-          <ul className="space-y-3 sm:space-y-4">
-            {profileDescriptions[dominantStyle]?.strengths.map((strength, index) => (
-              <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
-                <span className="text-white/40 mt-1 sm:mt-2">•</span>
-                <span className="leading-relaxed">{strength}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-        {/* CONSEJOS */}
-        <div>
-          <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
-            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-            Consejos
-          </h4>
-          <ul className="space-y-3 sm:space-y-4">
-            {profileDescriptions[dominantStyle]?.tips.map((tip, index) => (
-              <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
-                <span className="text-white/40 mt-1 sm:mt-2">•</span>
-                <span className="leading-relaxed">{tip}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+{/* Cards de información del perfil */}
+<div className="grid md:grid-cols-3 gap-6 mb-12">
+  
+  {/* Características */}
+  <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6">
+    <div className="flex items-center gap-3 mb-4">
+      <div className="w-6 h-6 rounded-full border-2 border-white/40 flex items-center justify-center">
+        <div className="w-2 h-2 bg-white/60 rounded-full"></div>
       </div>
+      <h3 className="text-lg font-normal text-white">Características</h3>
+    </div>
+    <ul className="space-y-3">
+      {profileDescriptions[dominantStyle]?.characteristics.map((char, index) => (
+        <li key={index} className="flex items-start gap-2 text-white/70 text-sm">
+          <span className="text-white/40 mt-1">•</span>
+          <span className="leading-relaxed">{char}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Fortalezas */}
+  <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6">
+    <div className="flex items-center gap-3 mb-4">
+      <div className="w-6 h-6 rounded-full border-2 border-white/40 flex items-center justify-center">
+        <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+      </div>
+      <h3 className="text-lg font-normal text-white">Fortalezas</h3>
+    </div>
+    <ul className="space-y-3">
+      {profileDescriptions[dominantStyle]?.strengths.map((strength, index) => (
+        <li key={index} className="flex items-start gap-2 text-white/70 text-sm">
+          <span className="text-white/40 mt-1">•</span>
+          <span className="leading-relaxed">{strength}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Consejos */}
+  <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6">
+    <div className="flex items-center gap-3 mb-4">
+      <div className="w-6 h-6 rounded-full border-2 border-white/40 flex items-center justify-center">
+        <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+      </div>
+      <h3 className="text-lg font-normal text-white">Consejos</h3>
+    </div>
+    <ul className="space-y-3">
+      {profileDescriptions[dominantStyle]?.tips.map((tip, index) => (
+        <li key={index} className="flex items-start gap-2 text-white/70 text-sm">
+          <span className="text-white/40 mt-1">•</span>
+          <span className="leading-relaxed">{tip}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
     </div>
   </div>
 </div>

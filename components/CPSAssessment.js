@@ -9,8 +9,6 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUz
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 const CPSAssessment = () => {
   const [currentStep, setCurrentStep] = useState('register');
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -405,133 +403,36 @@ const CPSAssessment = () => {
     setShowResults(false);
   };
 
-  // Función auxiliar para envolver texto
-  const wrapText = (ctx, text, maxWidth) => {
-    const words = text.split(' ');
-    const lines = [];
-    let currentLine = words[0];
-
-    for (let i = 1; i < words.length; i++) {
-      const word = words[i];
-      const width = ctx.measureText(currentLine + " " + word).width;
-      if (width < maxWidth) {
-        currentLine += " " + word;
-      } else {
-        lines.push(currentLine);
-        currentLine = word;
-      }
-    }
-    lines.push(currentLine);
-    return lines;
-  };
-
-  const downloadResults = async () => {
+const downloadResults = async () => {
+  const element = document.querySelector('.backdrop-blur-xl.bg-white\\/5'); // Selecciona el contenedor principal
+  if (element) {
     try {
-      // Crear un canvas para generar la imagen
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
-      // Configurar el canvas
-      canvas.width = 1200;
-      canvas.height = 1600;
-      
-      // Fondo negro
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Título
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 48px Arial, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('Mi Perfil Innovador', canvas.width / 2, 100);
-      
-      // Obtener el estilo dominante
-      const maxPercentage = Math.max(...Object.values(showResults.porcentajes));
-      const dominantStyle = Object.keys(showResults.porcentajes).find(
-        key => showResults.porcentajes[key] === maxPercentage
-      );
-      
-      // Estilo dominante
-      ctx.font = 'bold 36px Arial, sans-serif';
-      ctx.fillText(dominantStyle, canvas.width / 2, 180);
-      
-      ctx.font = '24px Arial, sans-serif';
-      ctx.fillText(`${showResults.porcentajes[dominantStyle]?.toFixed(1)}% de preferencia`, canvas.width / 2, 220);
-      
-      // Resultados por cuadrante
-      let y = 300;
-      ctx.font = '28px Arial, sans-serif';
-      ctx.textAlign = 'left';
-      
-      Object.entries(showResults.porcentajes).forEach(([cuadrante, porcentaje]) => {
-        ctx.fillStyle = cuadrante === dominantStyle ? '#ffffff' : '#cccccc';
-        ctx.fillText(`${cuadrante}: ${porcentaje.toFixed(1)}%`, 100, y);
-        
-        // Barra de progreso
-        const barWidth = 400;
-        const barHeight = 20;
-        const barX = 500;
-        const barY = y - 15;
-        
-        // Fondo de la barra
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.fillRect(barX, barY, barWidth, barHeight);
-        
-        // Progreso de la barra
-        ctx.fillStyle = cuadrante === dominantStyle ? '#ffffff' : 'rgba(255, 255, 255, 0.6)';
-        ctx.fillRect(barX, barY, (porcentaje / 100) * barWidth, barHeight);
-        
-        y += 80;
+      const canvas = await html2canvas(element, {
+        backgroundColor: '#000000',
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        width: element.offsetWidth,
+        height: element.offsetHeight
       });
       
-      // Información del perfil dominante
-      if (profileDescriptions[dominantStyle]) {
-        y += 50;
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 24px Arial, sans-serif';
-        ctx.fillText('Características principales:', 100, y);
-        
-        y += 40;
-        ctx.font = '18px Arial, sans-serif';
-        ctx.fillStyle = '#cccccc';
-        
-        profileDescriptions[dominantStyle].characteristics.forEach((char, index) => {
-          if (index < 4) { // Mostrar solo las primeras 4 para que quepa
-            const lines = wrapText(ctx, `• ${char}`, 900);
-            lines.forEach(line => {
-              ctx.fillText(line, 100, y);
-              y += 30;
-            });
-          }
-        });
-      }
-      
-      // Información adicional
-      y += 50;
-      ctx.fillStyle = '#888888';
-      ctx.font = '16px Arial, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(`Generado el ${new Date().toLocaleDateString('es-ES')}`, canvas.width / 2, y);
-      ctx.fillText('Perfil Innovador - Evaluación CPS', canvas.width / 2, y + 30);
-      
-      // Descargar la imagen
       const link = document.createElement('a');
-      link.download = `perfil-innovador-${userData.nombre?.replace(/\s+/g, '-') || 'usuario'}.png`;
+      link.download = `perfil-innovador-${userData.nombre.replace(/\s+/g, '-')}.png`;
       link.href = canvas.toDataURL('image/png');
-      document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
-      
     } catch (error) {
       console.error('Error al generar la imagen:', error);
       alert('Error al generar la imagen. Inténtalo de nuevo.');
     }
-  };
+  }
+};
+  
 
   const SpiderChart = ({ data }) => {
-    const size = 320;
+    const size = 364;
     const center = size / 2;
-    const maxRadius = 120;
+    const maxRadius = 130;
     const levels = 5;
     
     const dataArray = Object.entries(data);
@@ -612,7 +513,7 @@ const CPSAssessment = () => {
             
             {dataArray.map(([key, value], index) => {
               const angle = index * angleStep;
-              const labelPosition = polarToCartesian(angle, maxRadius + 40);
+              const labelPosition = polarToCartesian(angle, maxRadius + 50);
               return (
                 <g key={key}>
                   <text
@@ -620,18 +521,18 @@ const CPSAssessment = () => {
                     y={labelPosition.y}
                     textAnchor="middle"
                     dominantBaseline="middle"
-                    className="fill-white text-xs sm:text-sm font-light"
-                    style={{ fontSize: '12px' }}
+                    className="fill-white text-sm font-light"
+                    style={{ fontSize: '14px' }}
                   >
                     {key}
                   </text>
                   <text
                     x={labelPosition.x}
-                    y={labelPosition.y + 14}
+                    y={labelPosition.y + 16}
                     textAnchor="middle"
                     dominantBaseline="middle"
                     className="fill-white/70 text-xs font-light"
-                    style={{ fontSize: '10px' }}
+                    style={{ fontSize: '12px' }}
                   >
                     {value.toFixed(1)}%
                   </text>
@@ -641,12 +542,12 @@ const CPSAssessment = () => {
           </svg>
         </div>
         
-        <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md">
+        <div className="mt-8 grid grid-cols-2 gap-4 w-full max-w-md">
           {dataArray.map(([key, value], index) => (
-            <div key={key} className="flex items-center gap-2 sm:gap-3">
-              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full"></div>
+            <div key={key} className="flex items-center gap-3">
+              <div className="w-3 h-3 bg-white rounded-full"></div>
               <div>
-                <div className="text-white/90 text-xs sm:text-sm font-light">{key}</div>
+                <div className="text-white/90 text-sm font-light">{key}</div>
                 <div className="text-white/60 text-xs">{value.toFixed(1)}%</div>
               </div>
             </div>
@@ -656,179 +557,185 @@ const CPSAssessment = () => {
     );
   };
 
-  if (showResults) {
-    const maxPercentage = Math.max(...Object.values(showResults.porcentajes));
-    const dominantStyle = Object.keys(showResults.porcentajes).find(
-      key => showResults.porcentajes[key] === maxPercentage
-    );
+if (showResults) {
+  const maxPercentage = Math.max(...Object.values(showResults.porcentajes));
+  const dominantStyle = Object.keys(showResults.porcentajes).find(
+    key => showResults.porcentajes[key] === maxPercentage
+  );
 
-    return (
-      <div className="min-h-screen bg-black text-white relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-32 h-32 border border-white/10 rounded-full"></div>
-          <div className="absolute top-40 right-32 w-24 h-24 border border-white/5 rotate-45"></div>
-          <div className="absolute bottom-32 left-1/4 w-40 h-40 border border-white/5 rounded-full"></div>
-          <div className="absolute bottom-20 right-20 w-20 h-20 border border-white/10 rotate-12"></div>
-        </div>
+  return (
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-32 h-32 border border-white/10 rounded-full"></div>
+        <div className="absolute top-40 right-32 w-24 h-24 border border-white/5 rotate-45"></div>
+        <div className="absolute bottom-32 left-1/4 w-40 h-40 border border-white/5 rounded-full"></div>
+        <div className="absolute bottom-20 right-20 w-20 h-20 border border-white/10 rotate-12"></div>
+      </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto p-4 sm:p-8">
-          <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-6 sm:p-12 shadow-2xl" data-download-target>
-            <div className="text-center mb-8 sm:mb-12">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
-                <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-              </div>
-              <h1 className="text-2xl sm:text-4xl font-thin text-white mb-4 tracking-wide">Evaluación completada</h1>
-              <p className="text-white/70 text-base sm:text-lg font-light">Tu perfil innovador</p>
+      <div className="relative z-10 max-w-6xl mx-auto p-4 sm:p-8">
+        <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-6 sm:p-12 shadow-2xl">
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
+              <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-thin text-white mb-4 tracking-wide">Evaluación completada</h1>
+            <p className="text-white/70 text-base sm:text-lg font-light">Tu perfil innovador</p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+            {/* GRÁFICO A LA IZQUIERDA */}
+            <div className="flex flex-col items-center">
+              <SpiderChart data={showResults.porcentajes} />
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
-              <div className="flex flex-col items-center order-2 lg:order-1">
-                <SpiderChart data={showResults.porcentajes} />
-              </div>
-
-              <div className="space-y-6 order-1 lg:order-2">
-                <h2 className="text-xl sm:text-2xl font-thin text-white mb-6 tracking-wide">Perfil detallado</h2>
-                {Object.entries(showResults.porcentajes).map(([cuadrante, porcentaje], index) => (
-                  <div key={cuadrante} className="group">
-                    <div className={`backdrop-blur-sm rounded-2xl border transition-all duration-300 ${
-                      cuadrante === dominantStyle 
-                        ? 'bg-white/10 border-white/30 shadow-lg' 
-                        : 'bg-white/5 border-white/10 hover:border-white/20'
-                    }`}>
-                      <div className="p-4 sm:p-6">
-                        <div className="flex justify-between items-center mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${
-                              index === 0 ? 'bg-white' : 
-                              index === 1 ? 'bg-white/75' : 
-                              index === 2 ? 'bg-white/50' : 'bg-white/25'
-                            }`}></div>
-                            <span className={`text-lg sm:text-xl font-light tracking-wide ${
-                              cuadrante === dominantStyle ? 'text-white' : 'text-white/80'
-                            }`}>
-                              {cuadrante}
-                              {cuadrante === dominantStyle && <span className="ml-2 text-xl sm:text-2xl">⭐</span>}
-                            </span>
-                          </div>
-                          <span className={`text-xl sm:text-2xl font-thin tracking-wider ${
-                            cuadrante === dominantStyle ? 'text-white' : 'text-white/70'
+            {/* PERFIL DETALLADO A LA DERECHA */}
+            <div className="space-y-6 sm:space-y-8">
+              <h2 className="text-xl sm:text-2xl font-thin text-white mb-6 sm:mb-8 tracking-wide">Perfil detallado</h2>
+              {Object.entries(showResults.porcentajes).map(([cuadrante, porcentaje], index) => (
+                <div key={cuadrante} className="group">
+                  <div className={`backdrop-blur-sm rounded-2xl border transition-all duration-300 ${
+                    cuadrante === dominantStyle 
+                      ? 'bg-white/10 border-white/30 shadow-lg' 
+                      : 'bg-white/5 border-white/10 hover:border-white/20'
+                  }`}>
+                    <div className="p-4 sm:p-6">
+                      <div className="flex justify-between items-center mb-4">
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${
+                            index === 0 ? 'bg-white' : 
+                            index === 1 ? 'bg-white/75' : 
+                            index === 2 ? 'bg-white/50' : 'bg-white/25'
+                          }`}></div>
+                          <span className={`text-lg sm:text-xl font-light tracking-wide ${
+                            cuadrante === dominantStyle ? 'text-white' : 'text-white/80'
                           }`}>
-                            {porcentaje.toFixed(1)}%
+                            {cuadrante}
+                            {cuadrante === dominantStyle && <span className="ml-2 text-xl sm:text-2xl">⭐</span>}
                           </span>
                         </div>
-                        
-                        <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full transition-all duration-1000 ease-out ${
-                              cuadrante === dominantStyle 
-                                ? 'bg-gradient-to-r from-white to-white/80' 
-                                : 'bg-gradient-to-r from-white/60 to-white/40'
-                            }`}
-                            style={{ 
-                              width: `${porcentaje}%`,
-                              animationDelay: `${index * 200}ms`
-                            }}
-                          ></div>
-                        </div>
+                        <span className={`text-xl sm:text-2xl font-thin tracking-wider ${
+                          cuadrante === dominantStyle ? 'text-white' : 'text-white/70'
+                        }`}>
+                          {porcentaje.toFixed(1)}%
+                        </span>
+                      </div>
+                      
+                      <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div 
+                          className={`h-full transition-all duration-1000 ease-out ${
+                            cuadrante === dominantStyle 
+                              ? 'bg-gradient-to-r from-white to-white/80' 
+                              : 'bg-gradient-to-r from-white/60 to-white/40'
+                          }`}
+                          style={{ 
+                            width: `${porcentaje}%`,
+                            animationDelay: `${index * 200}ms`
+                          }}
+                        ></div>
                       </div>
                     </div>
                   </div>
-                ))}
-
-                <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6 sm:p-8">
-                  <h3 className="text-lg sm:text-xl font-light text-white mb-3 tracking-wide">Estilo dominante</h3>
-                  <p className="text-white/90 text-base sm:text-lg">
-                    <strong className="font-normal">{dominantStyle}</strong>
-                  </p>
-                  <p className="text-white/60 text-sm mt-3 font-light">
-                    {showResults.porcentajes[dominantStyle]?.toFixed(1)}% de preferencia hacia este perfil innovador
-                  </p>
                 </div>
+              ))}
+
+              <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6 sm:p-8">
+                <h3 className="text-lg sm:text-xl font-light text-white mb-3 tracking-wide">Estilo dominante</h3>
+                <p className="text-white/90 text-base sm:text-lg">
+                  <strong className="font-normal">{dominantStyle}</strong>
+                </p>
+                <p className="text-white/60 text-sm mt-3 font-light">
+                  {showResults.porcentajes[dominantStyle]?.toFixed(1)}% de preferencia hacia este perfil innovador
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="mt-12 sm:mt-16">
-              <div className="backdrop-blur-sm bg-white/5 rounded-3xl border border-white/10 p-8 sm:p-12">
-                <div className="border-l-4 border-white/30 pl-6 sm:pl-8">
-                  <h3 className="text-2xl sm:text-3xl font-thin text-white mb-6 tracking-wide">
-                    {profileDescriptions[dominantStyle]?.title}
-                  </h3>
-                  
-                  <div className="grid md:grid-cols-3 gap-8 sm:gap-12">
-                    <div>
-                      <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
-                        <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-                        Características
-                      </h4>
-                      <ul className="space-y-3 sm:space-y-4">
-                        {profileDescriptions[dominantStyle]?.characteristics.map((char, index) => (
-                          <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
-                            <span className="text-white/40 mt-1 sm:mt-2">•</span>
-                            <span className="leading-relaxed">{char}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
-                        <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-                        Fortalezas
-                      </h4>
-                      <ul className="space-y-3 sm:space-y-4">
-                        {profileDescriptions[dominantStyle]?.strengths.map((strength, index) => (
-                          <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
-                            <span className="text-white/40 mt-1 sm:mt-2">•</span>
-                            <span className="leading-relaxed">{strength}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
-                        <div className="w-2 h-2 bg-white/60 rounded-full"></div>
-                        Consejos
-                      </h4>
-                      <ul className="space-y-3 sm:space-y-4">
-                        {profileDescriptions[dominantStyle]?.tips.map((tip, index) => (
-                          <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
-                            <span className="text-white/40 mt-1 sm:mt-2">•</span>
-                            <span className="leading-relaxed">{tip}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="text-center mt-12 sm:mt-16">
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-                <button
-                  onClick={downloadResults}
-                  className="flex items-center justify-center gap-3 px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl"
-                >
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Descargar mis resultados
-                </button>
-                
-                <button
-                  onClick={resetAssessment}
-                  className="backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-8 sm:px-12 py-3 sm:py-4 rounded-2xl font-light text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl"
-                >
-                  Nueva evaluación
-                </button>
-              </div>
+   {/* SECCIÓN DETALLADA DEL PERFIL DOMINANTE */}
+<div className="mt-12 sm:mt-16">
+  <div className="backdrop-blur-sm bg-white/5 rounded-3xl border border-white/10 p-8 sm:p-12">
+    <div className="border-l-4 border-white/30 pl-6 sm:pl-8">
+      <h3 className="text-2xl sm:text-3xl font-thin text-white mb-4 sm:mb-6 tracking-wide">
+        {profileDescriptions[dominantStyle]?.title}
+      </h3>
+      
+      <div className="grid md:grid-cols-3 gap-8 sm:gap-12">
+        {/* CARACTERÍSTICAS */}
+        <div>
+          <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
+            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+            Características
+          </h4>
+          <ul className="space-y-3 sm:space-y-4">
+            {profileDescriptions[dominantStyle]?.characteristics.map((char, index) => (
+              <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
+                <span className="text-white/40 mt-1 sm:mt-2">•</span>
+                <span className="leading-relaxed">{char}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        {/* FORTALEZAS */}
+        <div>
+          <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
+            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+            Fortalezas
+          </h4>
+          <ul className="space-y-3 sm:space-y-4">
+            {profileDescriptions[dominantStyle]?.strengths.map((strength, index) => (
+              <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
+                <span className="text-white/40 mt-1 sm:mt-2">•</span>
+                <span className="leading-relaxed">{strength}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        {/* CONSEJOS */}
+        <div>
+          <h4 className="text-white/90 font-normal mb-4 sm:mb-6 text-base sm:text-lg tracking-wide flex items-center gap-3">
+            <div className="w-2 h-2 bg-white/60 rounded-full"></div>
+            Consejos
+          </h4>
+          <ul className="space-y-3 sm:space-y-4">
+            {profileDescriptions[dominantStyle]?.tips.map((tip, index) => (
+              <li key={index} className="flex items-start gap-3 text-white/70 font-light text-sm sm:text-base">
+                <span className="text-white/40 mt-1 sm:mt-2">•</span>
+                <span className="leading-relaxed">{tip}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+          <div className="text-center mt-12 sm:mt-16">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+              <button
+                onClick={downloadResults}
+                className="flex items-center justify-center gap-3 px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl"
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Descargar mis resultados
+              </button>
+              
+              <button
+                onClick={resetAssessment}
+                className="backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-8 sm:px-12 py-3 sm:py-4 rounded-2xl font-light text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl"
+              >
+                Nueva evaluación
+              </button>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (currentStep === 'register') {
     return (
@@ -1040,6 +947,7 @@ const CPSAssessment = () => {
             {questions[currentQuestion].options.map((option, index) => (
               <div key={index} className="group relative">
                 <div className="backdrop-blur-sm bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 p-4 sm:p-6">
+                  {/* Layout responsive: vertical en móvil, horizontal en desktop */}
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex items-center gap-3 sm:gap-4">
                       <span className="text-lg sm:text-xl font-light text-white tracking-wide">{option.text}</span>
@@ -1053,6 +961,7 @@ const CPSAssessment = () => {
                       </button>
                     </div>
                     
+                    {/* Botones en grilla de 4 columnas para móvil, flex para desktop */}
                     <div className="grid grid-cols-4 gap-2 sm:flex sm:gap-3 w-full sm:w-auto">
                       {[1, 2, 3, 4].map(rating => (
                         <button
@@ -1071,6 +980,7 @@ const CPSAssessment = () => {
                   </div>
                 </div>
 
+                {/* Tooltip adaptativo */}
                 {hoveredTooltip === `${currentQuestion}-${index}` && (
                   <div className="absolute left-0 top-full mt-2 z-20 backdrop-blur-xl bg-black/90 border border-white/20 rounded-xl px-4 py-3 w-full sm:max-w-xs shadow-2xl">
                     <p className="text-white/90 text-sm font-light">{option.tooltip}</p>
@@ -1089,6 +999,7 @@ const CPSAssessment = () => {
             )}
           </div>
 
+          {/* Navegación responsive */}
           <div className={`flex mt-8 sm:mt-12 gap-4 ${currentQuestion === 0 ? 'justify-end' : 'justify-between'}`}>
             {currentQuestion > 0 && (
               <button

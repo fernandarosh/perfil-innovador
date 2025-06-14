@@ -445,6 +445,8 @@ const CPSAssessment = () => {
     );
   };
 
+  // RETURNS CONDICIONALES PRIMERO
+  
   // Pantalla de resultados
   if (showResults) {
     const maxPercentage = Math.max(...Object.values(showResults.porcentajes));
@@ -551,130 +553,7 @@ const CPSAssessment = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-10 left-10 w-32 h-32 border border-white/5 rounded-full"></div>
-        <div className="absolute top-32 right-20 w-24 h-24 border border-white/5 rotate-45"></div>
-        <div className="absolute bottom-20 left-1/3 w-40 h-40 border border-white/5 rounded-full"></div>
-        <div className="absolute bottom-40 right-10 w-20 h-20 border border-white/5 rotate-12"></div>
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto p-8">
-        <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-12 shadow-2xl">
-          <div className="mb-12">
-            <div className="flex justify-between items-center mb-8">
-              <h1 className="text-3xl font-thin text-white tracking-wide">Perfil innovador</h1>
-              <span className="text-white/60 font-light tracking-wide">
-                {currentQuestion + 1} / {questions.length}
-              </span>
-            </div>
-            
-            <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mb-8">
-              <div 
-                className="h-full bg-gradient-to-r from-white to-white/70 transition-all duration-500 ease-out rounded-full"
-                style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
-              ></div>
-            </div>
-
-            <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-8">
-              <p className="text-white/90 text-lg leading-relaxed font-light">
-                Responde honestamente el adjetivo que describa mejor a cómo reaccionas a la hora de resolver problemas. 
-                Por cada fila debes enumerar del <strong className="font-normal text-white">1 al 4</strong>, siendo 
-                <strong className="font-normal text-white"> 4 el mayor puntaje</strong> y 
-                <strong className="font-normal text-white"> 1 el menor</strong>. 
-                Cada número solo se puede usar una vez por fila.
-              </p>
-              <p className="text-white/70 text-base mt-4 font-light flex items-center gap-2">
-                <Info className="w-4 h-4" />
-                Si tienes dudas sobre el significado de algún concepto, pasa el mouse sobre el símbolo de información.
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <h2 className="text-2xl font-thin text-white mb-8 tracking-wide">
-              Pregunta {questions[currentQuestion].id}
-            </h2>
-
-            {questions[currentQuestion].options.map((option, index) => (
-              <div key={index} className="group relative">
-                <div className="backdrop-blur-sm bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <span className="text-xl font-light text-white tracking-wide">{option.text}</span>
-                      <button
-                        onMouseEnter={() => setHoveredTooltip(`${currentQuestion}-${index}`)}
-                        onMouseLeave={() => setHoveredTooltip(null)}
-                        className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-200"
-                      >
-                        <Info className="w-3 h-3 text-white/60" />
-                      </button>
-                    </div>
-                    
-                    <div className="flex gap-3">
-                      {[1, 2, 3, 4].map(rating => (
-                        <button
-                          key={rating}
-                          onClick={() => handleRatingChange(index, rating)}
-                          className={`w-12 h-12 rounded-xl border font-light text-lg tracking-wide transition-all duration-200 ${
-                            getCurrentQuestionRatings()[index] === rating
-                              ? 'bg-white text-black border-white shadow-lg transform scale-105'
-                              : 'border-white/30 hover:border-white/50 hover:bg-white/10 text-white/80'
-                          }`}
-                        >
-                          {rating}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {hoveredTooltip === `${currentQuestion}-${index}` && (
-                  <div className="absolute left-0 top-full mt-2 z-20 backdrop-blur-xl bg-black/80 border border-white/20 rounded-xl px-4 py-3 max-w-xs shadow-2xl">
-                    <p className="text-white/90 text-sm font-light">{option.tooltip}</p>
-                    <div className="absolute -top-2 left-8 w-4 h-4 bg-black/80 border-l border-t border-white/20 transform rotate-45"></div>
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {!isQuestionComplete() && (
-              <div className="backdrop-blur-sm bg-white/5 border border-white/20 rounded-xl p-6">
-                <p className="text-white/80 font-light">
-                  💡 Recuerda: Debes usar cada número (1, 2, 3, 4) exactamente una vez en esta pregunta.
-                </p>
-              </div>
-            )}
-          </div>
-
-          <div className={`flex mt-12 ${currentQuestion === 0 ? 'justify-end' : 'justify-between'}`}>
-            {currentQuestion > 0 && (
-              <button
-                onClick={goBack}
-                className="flex items-center gap-3 px-8 py-4 backdrop-blur-sm bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/30 rounded-2xl text-white/80 hover:text-white transition-all duration-200 font-light tracking-wide"
-              >
-                <ChevronLeft className="w-5 h-5" />
-                Anterior
-              </button>
-            )}
-
-            <button
-              onClick={goNext}
-              disabled={!canGoNext() || isLoading}
-              className="flex items-center gap-3 px-12 py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-xl"
-            >
-              {isLoading ? 'Guardando...' : currentQuestion === questions.length - 1 ? 'Ver resultados' : 'Siguiente'}
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default CPSAssessment;
+  // Pantalla de registro
   if (currentStep === 'register') {
     return (
       <div className="min-h-screen bg-black text-white relative overflow-hidden">
@@ -836,4 +715,128 @@ export default CPSAssessment;
     );
   }
 
-  // Pant
+  // RETURN POR DEFECTO - Pantalla de evaluación
+  return (
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-10 left-10 w-32 h-32 border border-white/5 rounded-full"></div>
+        <div className="absolute top-32 right-20 w-24 h-24 border border-white/5 rotate-45"></div>
+        <div className="absolute bottom-20 left-1/3 w-40 h-40 border border-white/5 rounded-full"></div>
+        <div className="absolute bottom-40 right-10 w-20 h-20 border border-white/5 rotate-12"></div>
+      </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto p-8">
+        <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-12 shadow-2xl">
+          <div className="mb-12">
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-3xl font-thin text-white tracking-wide">Perfil innovador</h1>
+              <span className="text-white/60 font-light tracking-wide">
+                {currentQuestion + 1} / {questions.length}
+              </span>
+            </div>
+            
+            <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mb-8">
+              <div 
+                className="h-full bg-gradient-to-r from-white to-white/70 transition-all duration-500 ease-out rounded-full"
+                style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+              ></div>
+            </div>
+
+            <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-8">
+              <p className="text-white/90 text-lg leading-relaxed font-light">
+                Responde honestamente el adjetivo que describa mejor a cómo reaccionas a la hora de resolver problemas. 
+                Por cada fila debes enumerar del <strong className="font-normal text-white">1 al 4</strong>, siendo 
+                <strong className="font-normal text-white"> 4 el mayor puntaje</strong> y 
+                <strong className="font-normal text-white"> 1 el menor</strong>. 
+                Cada número solo se puede usar una vez por fila.
+              </p>
+              <p className="text-white/70 text-base mt-4 font-light flex items-center gap-2">
+                <Info className="w-4 h-4" />
+                Si tienes dudas sobre el significado de algún concepto, pasa el mouse sobre el símbolo de información.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <h2 className="text-2xl font-thin text-white mb-8 tracking-wide">
+              Pregunta {questions[currentQuestion].id}
+            </h2>
+
+            {questions[currentQuestion].options.map((option, index) => (
+              <div key={index} className="group relative">
+                <div className="backdrop-blur-sm bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-300 p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <span className="text-xl font-light text-white tracking-wide">{option.text}</span>
+                      <button
+                        onMouseEnter={() => setHoveredTooltip(`${currentQuestion}-${index}`)}
+                        onMouseLeave={() => setHoveredTooltip(null)}
+                        className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center hover:border-white/40 transition-colors duration-200"
+                      >
+                        <Info className="w-3 h-3 text-white/60" />
+                      </button>
+                    </div>
+                    
+                    <div className="flex gap-3">
+                      {[1, 2, 3, 4].map(rating => (
+                        <button
+                          key={rating}
+                          onClick={() => handleRatingChange(index, rating)}
+                          className={`w-12 h-12 rounded-xl border font-light text-lg tracking-wide transition-all duration-200 ${
+                            getCurrentQuestionRatings()[index] === rating
+                              ? 'bg-white text-black border-white shadow-lg transform scale-105'
+                              : 'border-white/30 hover:border-white/50 hover:bg-white/10 text-white/80'
+                          }`}
+                        >
+                          {rating}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {hoveredTooltip === `${currentQuestion}-${index}` && (
+                  <div className="absolute left-0 top-full mt-2 z-20 backdrop-blur-xl bg-black/80 border border-white/20 rounded-xl px-4 py-3 max-w-xs shadow-2xl">
+                    <p className="text-white/90 text-sm font-light">{option.tooltip}</p>
+                    <div className="absolute -top-2 left-8 w-4 h-4 bg-black/80 border-l border-t border-white/20 transform rotate-45"></div>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {!isQuestionComplete() && (
+              <div className="backdrop-blur-sm bg-white/5 border border-white/20 rounded-xl p-6">
+                <p className="text-white/80 font-light">
+                  💡 Recuerda: Debes usar cada número (1, 2, 3, 4) exactamente una vez en esta pregunta.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className={`flex mt-12 ${currentQuestion === 0 ? 'justify-end' : 'justify-between'}`}>
+            {currentQuestion > 0 && (
+              <button
+                onClick={goBack}
+                className="flex items-center gap-3 px-8 py-4 backdrop-blur-sm bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/30 rounded-2xl text-white/80 hover:text-white transition-all duration-200 font-light tracking-wide"
+              >
+                <ChevronLeft className="w-5 h-5" />
+                Anterior
+              </button>
+            )}
+
+            <button
+              onClick={goNext}
+              disabled={!canGoNext() || isLoading}
+              className="flex items-center gap-3 px-12 py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 shadow-xl"
+            >
+              {isLoading ? 'Guardando...' : currentQuestion === questions.length - 1 ? 'Ver resultados' : 'Siguiente'}
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CPSAssessment;

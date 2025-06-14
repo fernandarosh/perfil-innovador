@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Info, CheckCircle2, User, Mail, Building, Briefcase, Globe, Phone } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import jsPDF from 'jspdf';
-import { Turnstile } from '@marsidev/react-turnstile';
+// import { Turnstile } from '@marsidev/react-turnstile';
 
 const supabase = createClient(
   'https://ykobwfbnfaydxvuqjxby.supabase.co',
@@ -230,9 +230,9 @@ const CPSAssessment = () => {
     const hasAllFields = required.every(field => userData[field] && userData[field].trim() !== '');
     const validEmail = isValidEmail(userData.email || '');
     const validPhone = isValidPhone(userData.telefono || '');
-    const hasCaptcha = !!captchaToken;
+    // const hasCaptcha = !!captchaToken;
     
-    return hasAllFields && validEmail && validPhone && hasCaptcha;
+    return hasAllFields && validEmail && validPhone; // && hasCaptcha;
   };
 
   const startAssessment = async () => {
@@ -725,7 +725,8 @@ const CPSAssessment = () => {
               </div>
             </div>
 
-            {/* Turnstile CAPTCHA */}
+            {/* Turnstile CAPTCHA - Temporalmente comentado */}
+            {/* 
             <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-4 sm:p-6 mt-6">
               <div className="flex justify-center">
                 <Turnstile
@@ -743,6 +744,7 @@ const CPSAssessment = () => {
                 />
               </div>
             </div>
+            */}
 
             <div className="text-center mt-8 sm:mt-12">
               <button
@@ -753,7 +755,7 @@ const CPSAssessment = () => {
                 {isLoading ? 'Guardando...' : 'Comenzar evaluación'}
               </button>
               <p className="text-white/50 text-xs mt-4 font-light">
-                * Campos obligatorios. Completa el captcha para continuar.
+                * Campos obligatorios
               </p>
             </div>
           </div>

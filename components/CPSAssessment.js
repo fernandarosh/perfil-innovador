@@ -1,8 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Info, CheckCircle2, User, Mail, Building, Briefcase, Globe, Phone } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import jsPDF from 'jspdf';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ywtdjwkxgvtntaicksbk.supabase.co';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3dGRqd2t4Z3Z0bnRhaWNrc2JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4NjIyNjYsImV4cCI6MjA2NTQzODI2Nn0.OlBckntHtKRGgVAaSpmUtrpxUm3wCMefqftXJd0j-kY';
@@ -18,6 +19,8 @@ const CPSAssessment = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [hoveredTooltip, setHoveredTooltip] = useState(null);
+  const [captchaToken, setCaptchaToken] = useState();
+  const captcha = useRef();
 
   const questions = [
     {
@@ -266,8 +269,9 @@ const CPSAssessment = () => {
     const hasAllFields = required.every(field => userData[field] && userData[field].trim() !== '');
     const validEmail = isValidEmail(userData.email || '');
     const validPhone = isValidPhone(userData.telefono || '');
+    const hasCaptcha = !!captchaToken;
     
-    return hasAllFields && validEmail && validPhone;
+    return hasAllFields && validEmail && validPhone && hasCaptcha;
   };
 
   const startAssessment = async () => {
@@ -297,9 +301,21 @@ const CPSAssessment = () => {
       console.log('Usuario guardado exitosamente:', data[0]);
       setCurrentStep('assessment');
       
+      // Reset captcha after successful submission
+      if (captcha.current) {
+        captcha.current.resetCaptcha();
+      }
+      setCaptchaToken(null);
+      
     } catch (error) {
       console.error('Error al guardar usuario:', error);
       alert(`Error al guardar datos: ${error.message}`);
+      
+      // Reset captcha on error too
+      if (captcha.current) {
+        captcha.current.resetCaptcha();
+      }
+      setCaptchaToken(null);
     } finally {
       setIsLoading(false);
     }
@@ -1063,7 +1079,7 @@ if (showResults) {
                 {isLoading ? 'Guardando...' : 'Comenzar evaluación'}
               </button>
               <p className="text-white/50 text-xs mt-4 font-light">
-                * Campos obligatorios
+                * Campos obligatorios. Verifica el captcha para continuar.
               </p>
             </div>
           </div>

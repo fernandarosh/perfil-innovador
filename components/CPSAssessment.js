@@ -1074,13 +1074,23 @@ if (showResults) {
             </div>
 
             <div className="text-center mt-8 sm:mt-12">
-              <button
-                onClick={startAssessment}
-                disabled={!isRegistrationComplete() || isLoading}
-                className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-base sm:text-lg tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-xl"
-              >
-                {isLoading ? 'Guardando...' : 'Comenzar evaluación'}
-              </button>
+  {/* CAPTCHA de Turnstile */}
+  <div className="mb-6 flex justify-center">
+    <div 
+      className="cf-turnstile" 
+      data-sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAABhA-P-saUwd8wpl'}
+      data-callback="onTurnstileSuccess"
+      data-theme="dark"
+    ></div>
+  </div>
+  
+  <button
+    onClick={startAssessment}
+    disabled={!isRegistrationComplete() || !captchaToken || isLoading}
+    className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-base sm:text-lg tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-xl"
+  >
+    {isLoading ? 'Guardando...' : 'Comenzar evaluación'}
+  </button>
               <p className="text-white/50 text-xs mt-4 font-light">
                 * Campos obligatorios
               </p>

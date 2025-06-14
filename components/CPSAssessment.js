@@ -285,9 +285,15 @@ const CPSAssessment = () => {
     
     return hasAllFields && validEmail && validPhone;
   };
-
-  const startAssessment = async () => {
-    if (!isRegistrationComplete()) return;
+// Función callback para Turnstile
+window.onTurnstileSuccess = function(token) {
+  setCaptchaToken(token);
+};
+const startAssessment = async () => {
+  if (!isRegistrationComplete() || !captchaToken) {
+    alert('Por favor completa el CAPTCHA');
+    return;
+  }
     
     setIsLoading(true);
     
@@ -302,10 +308,10 @@ const CPSAssessment = () => {
         newsletter: userData.newsletter || false
       };
       
-      const { data, error } = await supabase
-        .from('usuarios')
-        .insert([userToSave])
-        .select();
+const { data, error } = await supabase
+  .from('usuarios')
+  .insert([userToSave])
+  .select();
       
       if (error) throw error;
       

@@ -45,16 +45,16 @@ const CPSAssessment = () => {
       options: [
         { text: "Alerta", tooltip: "Estar atento y vigilante ante los detalles del problema", dimension: "Experiencia" },
         { text: "Equilibrado", tooltip: "Mantener estabilidad entre diferentes perspectivas", dimension: "Ideación" },
-        { text: "Listo", tooltip: "Preparado mentalmente para abordar desafíos", dimension: "Pensamiento" },
-        { text: "Ansioso", tooltip: "Sentir urgencia por resolver el problema rápidamente", dimension: "Evaluación" }
+        { text: "Preparado", tooltip: "Estar mentalmente listo para abordar desafíos", dimension: "Pensamiento" },
+        { text: "Impaciente", tooltip: "Sentir urgencia por resolver el problema rápidamente", dimension: "Evaluación" }
       ]
     },
     {
       id: 2,
       options: [
         { text: "Paciente", tooltip: "Tomarse el tiempo necesario para entender completamente", dimension: "Experiencia" },
-        { text: "Diligente", tooltip: "Trabajar con cuidado y persistencia en los detalles", dimension: "Ideación" },
-        { text: "Contundente", tooltip: "Ser claro y directo en las conclusiones", dimension: "Pensamiento" },
+        { text: "Meticuloso", tooltip: "Trabajar con cuidado y atención a los detalles", dimension: "Ideación" },
+        { text: "Decisivo", tooltip: "Ser claro y firme en las conclusiones", dimension: "Pensamiento" },
         { text: "Preparado", tooltip: "Tener todo listo antes de actuar", dimension: "Evaluación" }
       ]
     },
@@ -62,7 +62,7 @@ const CPSAssessment = () => {
       id: 3,
       options: [
         { text: "Activo", tooltip: "Preferir la acción directa y la experimentación", dimension: "Experiencia" },
-        { text: "Ingenuo", tooltip: "Abordar problemas con mente abierta y sin prejuicios", dimension: "Ideación" },
+        { text: "Espontáneo", tooltip: "Abordar problemas con mente abierta y sin prejuicios", dimension: "Ideación" },
         { text: "Observador", tooltip: "Analizar cuidadosamente antes de actuar", dimension: "Pensamiento" },
         { text: "Realista", tooltip: "Enfocarse en lo que es práctico y alcanzable", dimension: "Evaluación" }
       ]
@@ -71,9 +71,9 @@ const CPSAssessment = () => {
       id: 4,
       options: [
         { text: "Experimental", tooltip: "Probar diferentes enfoques para ver qué funciona", dimension: "Experiencia" },
-        { text: "Diverso", tooltip: "Explorar múltiples alternativas y posibilidades", dimension: "Ideación" },
+        { text: "Variado", tooltip: "Explorar múltiples alternativas y posibilidades", dimension: "Ideación" },
         { text: "Reflexivo", tooltip: "Tomarse tiempo para reflexionar antes de decidir", dimension: "Pensamiento" },
-        { text: "Organizador", tooltip: "Organizar y estructurar la información disponible", dimension: "Evaluación" }
+        { text: "Ordenado", tooltip: "Organizar y estructurar la información de manera sistemática", dimension: "Evaluación" }
       ]
     },
     {
@@ -81,7 +81,7 @@ const CPSAssessment = () => {
       options: [
         { text: "Reservado", tooltip: "Preferir trabajar de manera reflexiva y privada", dimension: "Experiencia" },
         { text: "Serio", tooltip: "Abordar problemas con formalidad y rigor", dimension: "Ideación" },
-        { text: "Gozador", tooltip: "Disfrutar del proceso de resolver problemas", dimension: "Pensamiento" },
+        { text: "Entusiasta", tooltip: "Mostrar energía y pasión en el proceso de resolver problemas", dimension: "Pensamiento" },
         { text: "Juguetón", tooltip: "Usar creatividad y humor en la resolución", dimension: "Evaluación" }
       ]
     },
@@ -91,14 +91,14 @@ const CPSAssessment = () => {
         { text: "Práctico", tooltip: "Aprender probando diferentes soluciones", dimension: "Experiencia" },
         { text: "Creativo", tooltip: "Generar múltiples opciones antes de elegir", dimension: "Ideación" },
         { text: "Analítico", tooltip: "Evaluar cuidadosamente pros y contras", dimension: "Pensamiento" },
-        { text: "Evaluador", tooltip: "Juzgar sistemáticamente las opciones disponibles", dimension: "Evaluación" }
+        { text: "Selectivo", tooltip: "Elegir cuidadosamente las mejores opciones disponibles", dimension: "Evaluación" }
       ]
     },
     {
       id: 7,
       options: [
         { text: "Resolutivo", tooltip: "Poner en práctica las soluciones rápidamente", dimension: "Experiencia" },
-        { text: "Divergente", tooltip: "Expandir las posibilidades y pensar 'fuera de la caja'", dimension: "Ideación" },
+        { text: "Divergente", tooltip: "Expandir las posibilidades y pensar fuera de lo convencional", dimension: "Ideación" },
         { text: "Abstracto", tooltip: "Encontrar patrones y conceptos generales", dimension: "Pensamiento" },
         { text: "Convergente", tooltip: "Enfocar las ideas hacia una solución específica", dimension: "Evaluación" }
       ]
@@ -107,16 +107,16 @@ const CPSAssessment = () => {
       id: 8,
       options: [
         { text: "Directo", tooltip: "Ir al grano sin rodeos innecesarios", dimension: "Experiencia" },
-        { text: "Posibilidades", tooltip: "Explorar todo el potencial de las situaciones", dimension: "Ideación" },
+        { text: "Explorativo", tooltip: "Investigar y descubrir todo el potencial de las situaciones", dimension: "Ideación" },
         { text: "Conceptual", tooltip: "Trabajar con ideas y teorías abstractas", dimension: "Pensamiento" },
-        { text: "Realidades", tooltip: "Mantenerse conectado con hechos concretos", dimension: "Evaluación" }
+        { text: "Realista", tooltip: "Mantenerse conectado con hechos concretos y tangibles", dimension: "Evaluación" }
       ]
     },
     {
       id: 9,
       options: [
         { text: "Involucrado", tooltip: "Participar activamente en el proceso", dimension: "Experiencia" },
-        { text: "Cambiar Perspectivas", tooltip: "Ver el problema desde diferentes ángulos", dimension: "Ideación" },
+        { text: "Flexible", tooltip: "Adaptarse y ver el problema desde diferentes ángulos", dimension: "Ideación" },
         { text: "Teórico", tooltip: "Aplicar marcos conceptuales y modelos", dimension: "Pensamiento" },
         { text: "Enfocado", tooltip: "Concentrarse intensamente en objetivos específicos", dimension: "Evaluación" }
       ]
@@ -133,7 +133,7 @@ const CPSAssessment = () => {
     {
       id: 11,
       options: [
-        { text: "Implementador", tooltip: "Llevar las ideas a la práctica efectivamente", dimension: "Experiencia" },
+        { text: "Aplicativo", tooltip: "Llevar las ideas a la práctica de manera efectiva", dimension: "Experiencia" },
         { text: "Visionario", tooltip: "Imaginar claramente las soluciones futuras", dimension: "Ideación" },
         { text: "Descriptivo", tooltip: "Explicar detalladamente los problemas y soluciones", dimension: "Pensamiento" },
         { text: "Selectivo", tooltip: "Elegir las mejores opciones disponibles", dimension: "Evaluación" }
@@ -142,8 +142,8 @@ const CPSAssessment = () => {
     {
       id: 12,
       options: [
-        { text: "Ejecutivo", tooltip: "Realizar las acciones necesarias eficientemente", dimension: "Experiencia" },
-        { text: "Futurista", tooltip: "Pensar en implicaciones y consecuencias a largo plazo", dimension: "Ideación" },
+        { text: "Eficiente", tooltip: "Realizar las acciones necesarias de manera productiva", dimension: "Experiencia" },
+        { text: "Prospectivo", tooltip: "Pensar en implicaciones y consecuencias a largo plazo", dimension: "Ideación" },
         { text: "Racional", tooltip: "Usar lógica y razonamiento sistemático", dimension: "Pensamiento" },
         { text: "Detallista", tooltip: "Prestar atención a aspectos específicos y minuciosos", dimension: "Evaluación" }
       ]
@@ -151,7 +151,7 @@ const CPSAssessment = () => {
     {
       id: 13,
       options: [
-        { text: "Movido", tooltip: "Impulsado a tomar acción y avanzar hacia soluciones", dimension: "Experiencia" },
+        { text: "Motivado", tooltip: "Impulsado a tomar acción y avanzar hacia soluciones", dimension: "Experiencia" },
         { text: "Imaginativo", tooltip: "Capaz de generar ideas creativas y originales", dimension: "Ideación" },
         { text: "Racional", tooltip: "Guiado por la lógica y el razonamiento sistemático", dimension: "Pensamiento" },
         { text: "Determinado", tooltip: "Firme en las decisiones y comprometido con los resultados", dimension: "Evaluación" }
@@ -188,16 +188,16 @@ const CPSAssessment = () => {
       id: 17,
       options: [
         { text: "Empático", tooltip: "Conectando emocionalmente con la situación y las personas", dimension: "Experiencia" },
-        { text: "Práctico", tooltip: "Enfocado en aplicaciones útiles y realizables", dimension: "Ideación" },
+        { text: "Accionador", tooltip: "Enfocado en poner en marcha aplicaciones útiles y realizables", dimension: "Ideación" },
         { text: "Emotivo", tooltip: "Guiado por sentimientos e intuición en el proceso", dimension: "Pensamiento" },
-        { text: "Tardío", tooltip: "Tomándose el tiempo necesario antes de actuar", dimension: "Evaluación" }
+        { text: "Pausado", tooltip: "Tomándose el tiempo necesario antes de actuar con reflexión", dimension: "Evaluación" }
       ]
     },
     {
       id: 18,
       options: [
         { text: "Activo", tooltip: "Implementando soluciones de manera inmediata y enérgica", dimension: "Experiencia" },
-        { text: "Diferenciado", tooltip: "Capaz de identificar matices y diferencias importantes", dimension: "Ideación" },
+        { text: "Distintivo", tooltip: "Capaz de identificar matices y diferencias importantes", dimension: "Ideación" },
         { text: "Analítico", tooltip: "Descomponiendo problemas en elementos comprensibles", dimension: "Pensamiento" },
         { text: "Seguro", tooltip: "Confiado en que los resultados cumplirán los estándares", dimension: "Evaluación" }
       ]
@@ -232,8 +232,8 @@ const CPSAssessment = () => {
   ];
 
   const profileDescriptions = {
-    'Generador': {
-      title: 'Generador (Concreto + Activo)',
+    'Impulsor': {
+      title: 'Impulsor (Concreto + Activo)',
       characteristics: [
         'Orientado a la acción y la experiencia directa',
         'Aprende haciendo y experimentando',
@@ -248,13 +248,13 @@ const CPSAssessment = () => {
       ],
       tips: [
         'Canaliza tu energía hacia objetivos específicos',
-        'Busca feedback constante para ajustar tu rumbo',
+        'Busca retroalimentación constante para ajustar tu rumbo',
         'Colabora con tipos más reflexivos para equilibrar tu impulsividad',
         'Documenta tus experiencias para aprender de ellas'
       ]
     },
-    'Conceptualizador': {
-      title: 'Conceptualizador (Abstracto + Reflexivo)',
+    'Modelador': {
+      title: 'Modelador (Abstracto + Reflexivo)',
       characteristics: [
         'Piensa en términos teóricos y conceptuales',
         'Analiza patrones y relaciones complejas',
@@ -271,11 +271,11 @@ const CPSAssessment = () => {
         'Traduce tus ideas abstractas en términos prácticos',
         'Busca datos concretos para validar tus teorías',
         'Colabora con tipos más activos para implementar tus ideas',
-        'Establece plazos para evitar el "análisis paralítico"'
+        'Establece plazos para evitar el análisis excesivo'
       ]
     },
-    'Optimizador': {
-      title: 'Optimizador (Abstracto + Activo)',
+    'Depurador': {
+      title: 'Depurador (Abstracto + Activo)',
       characteristics: [
         'Enfocado en mejorar y perfeccionar',
         'Busca eficiencia y resultados',
@@ -295,8 +295,8 @@ const CPSAssessment = () => {
         'Involucra a otros tipos para generar nuevas ideas'
       ]
     },
-    'Implementador': {
-      title: 'Implementador (Concreto + Reflexivo)',
+    'Materializador': {
+      title: 'Materializador (Concreto + Reflexivo)',
       characteristics: [
         'Enfocado en la aplicación práctica',
         'Evalúa cuidadosamente antes de actuar',
@@ -312,7 +312,7 @@ const CPSAssessment = () => {
       tips: [
         'No te paralices en la planificación excesiva',
         'Acepta que no toda la información estará disponible',
-        'Colabora con generadores para acelerar el proceso',
+        'Colabora con impulsores para acelerar el proceso',
         'Experimenta con pequeños prototipos antes de la implementación completa'
       ]
     }
@@ -449,10 +449,10 @@ const CPSAssessment = () => {
   });
 
       const cuadrantes = {
-        'Generador': totals.Experiencia + totals.Ideación,
-        'Conceptualizador': totals.Ideación + totals.Pensamiento,
-        'Optimizador': totals.Pensamiento + totals.Evaluación,
-        'Implementador': totals.Evaluación + totals.Experiencia
+        'Impulsor': totals.Experiencia + totals.Ideación,
+        'Modelador': totals.Ideación + totals.Pensamiento,
+        'Depurador': totals.Pensamiento + totals.Evaluación,
+        'Materializador': totals.Evaluación + totals.Experiencia
       };
 
   // ✅ FÓRMULA CORREGIDA: Calcular porcentajes basados en el total real
@@ -476,10 +476,10 @@ const CPSAssessment = () => {
           ideacion: totals.Ideación,
           pensamiento: totals.Pensamiento,
           evaluacion: totals.Evaluación,
-          generador_pct: porcentajes.Generador,
-          conceptualizador_pct: porcentajes.Conceptualizador,
-          optimizador_pct: porcentajes.Optimizador,
-          implementador_pct: porcentajes.Implementador,
+          impulsor_pct: porcentajes.Impulsor,
+          modelador_pct: porcentajes.Modelador,
+          depurador_pct: porcentajes.Depurador,
+          materializador_pct: porcentajes.Materializador,
           estilo_dominante: dominantStyle
         };
 
@@ -534,7 +534,7 @@ const CPSAssessment = () => {
       pdf.text('MI PERFIL INNOVADOR', pageWidth/2, 20, { align: 'center' });
       
       pdf.setFontSize(14);
-      pdf.text('Evaluación CPS - Creative Problem Solving', pageWidth/2, 30, { align: 'center' });
+      pdf.text('Evaluación CPS - Resolución Creativa de Problemas', pageWidth/2, 30, { align: 'center' });
       
       // INFORMACIÓN PERSONAL
       let yPos = 55;

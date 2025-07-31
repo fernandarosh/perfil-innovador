@@ -20,24 +20,38 @@ const CPSAssessment = () => {
   const [hoveredTooltip, setHoveredTooltip] = useState(null);
 
   // Cargar script de Turnstile
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-    
-    // Función callback para Turnstile
-    window.onTurnstileSuccess = function(token) {
-      setCaptchaToken(token);
-    };
-    
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
+useEffect(() => {
+  const script = document.createElement('script');
+  script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+  
+  // Función callback para Turnstile
+  window.onTurnstileSuccess = function(token) {
+    setCaptchaToken(token);
+  };
+  
+  return () => {
+    if (document.head.contains(script)) {
+      document.head.removeChild(script);
+    }
+  };
+}, []);
+
+// Reinicializar Turnstile cuando cambie a la pantalla de registro
+useEffect(() => {
+  if (currentStep === 'register' && window.turnstile) {
+    // Dar tiempo para que el DOM se renderice
+    setTimeout(() => {
+      try {
+        window.turnstile.render('.cf-turnstile');
+      } catch (error) {
+        console.log('Turnstile ya renderizado o no disponible');
       }
-    };
-  }, []);
+    }, 100);
+  }
+}, [currentStep]);
 
   const questions = [
     {

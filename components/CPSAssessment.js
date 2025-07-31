@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Info, CheckCircle2, User, Mail, Building, Briefcase, Globe, Phone } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Info, CheckCircle2, User, Mail, Building, Briefcase, Globe, Phone, BookOpen } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import jsPDF from 'jspdf';
 
@@ -10,7 +10,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const CPSAssessment = () => {
   const [captchaToken, setCaptchaToken] = useState(null);
-  const [currentStep, setCurrentStep] = useState('register');
+  const [currentStep, setCurrentStep] = useState('methodology');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState({});
   const [userData, setUserData] = useState({});
@@ -502,7 +502,7 @@ const CPSAssessment = () => {
     };
 
   const resetAssessment = () => {
-    setCurrentStep('register');
+    setCurrentStep('methodology');
     setCurrentQuestion(0);
     setResponses({});
     setUserData({});
@@ -833,7 +833,135 @@ const CPSAssessment = () => {
       </div>
     );
   };
+  // Methodology Screen
+  if (currentStep === 'methodology') {
+    return (
+      <div className="min-h-screen bg-black text-white relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-32 h-32 border border-white/5 rounded-full"></div>
+          <div className="absolute top-32 right-20 w-24 h-24 border border-white/5 rotate-45"></div>
+          <div className="absolute bottom-20 left-1/3 w-40 h-40 border border-white/5 rounded-full"></div>
+          <div className="absolute bottom-40 right-10 w-20 h-20 border border-white/5 rotate-12"></div>
+        </div>
 
+        <div className="relative z-10 max-w-4xl mx-auto p-4 sm:p-8">
+          <div className="backdrop-blur-xl bg-white/5 rounded-3xl border border-white/10 p-6 sm:p-12 shadow-2xl">
+            <div className="text-center mb-8 sm:mb-12">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-white/20 to-white/10 flex items-center justify-center backdrop-blur-sm">
+                <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+              </div>
+              <h1 className="text-2xl sm:text-4xl font-thin text-white mb-4 tracking-wide">Metodología de evaluación del perfil innovador</h1>
+            </div>
+
+            <div className="prose prose-invert max-w-none">
+              <div className="space-y-8">
+                <section>
+                  <h2 className="text-xl sm:text-2xl font-normal text-white mb-4">Fundamentos teóricos</h2>
+                  <p className="text-white/80 leading-relaxed">
+                    Nuestra evaluación está basada en diversos métodos de análisis de estilos de pensamiento creativo e innovador, 
+                    incluyendo el trabajo pionero del <strong className="text-white">Dr. Min Basadur</strong> en el modelo CPS (Creative Problem Solving), 
+                    pero ha sido <strong className="text-white">revisado, amplificado y complementado</strong> por nuestro equipo 
+                    con base en años de experiencia en consultoría de innovación y desarrollo organizacional.
+                  </p>
+                </section>
+
+                <section>
+                  <h2 className="text-xl sm:text-2xl font-normal text-white mb-6">Los cuatro perfiles innovadores</h2>
+                  
+                  <div className="space-y-8">
+                    <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6">
+                      <h3 className="text-lg font-semibold text-white mb-2">
+                        <strong>Impulsor</strong> (experiencia + ideación)
+                      </h3>
+                      <p className="text-white/70 italic mb-3">El catalizador que inicia el cambio</p>
+                      <p className="text-white/80 leading-relaxed mb-3">
+                        Los <strong>impulsores</strong> son quienes ven oportunidades donde otros ven obstáculos. 
+                        Combinan la experiencia directa con la generación creativa de ideas, convirtiéndose en los iniciadores 
+                        naturales de proyectos e innovaciones. Son experimentadores natos que aprenden haciendo y tienen una 
+                        capacidad especial para detectar tendencias emergentes y movilizar recursos hacia nuevas posibilidades.
+                      </p>
+                      <p className="text-white/70 text-sm">
+                        <strong>Características distintivas:</strong> orientados a la acción, buscan variedad y cambio, 
+                        generan entusiasmo, actúan rápidamente ante problemas.
+                      </p>
+                    </div>
+
+                    <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6">
+                      <h3 className="text-lg font-semibold text-white mb-2">
+                        <strong>Modelador</strong> (ideación + pensamiento)
+                      </h3>
+                      <p className="text-white/70 italic mb-3">El arquitecto de frameworks mentales</p>
+                      <p className="text-white/80 leading-relaxed mb-3">
+                        Los <strong>modeladores</strong> construyen los marcos conceptuales que otros utilizan para entender 
+                        el mundo. Combinan la capacidad generativa con el análisis profundo, desarrollando teorías, modelos y 
+                        sistemas de pensamiento que aportan claridad a la complejidad. Son los estrategas que ven patrones 
+                        ocultos y traducen la complejidad en estructuras comprensibles.
+                      </p>
+                      <p className="text-white/70 text-sm">
+                        <strong>Características distintivas:</strong> pensamiento teórico y conceptual, análisis de patrones 
+                        complejos, reflexión profunda, búsqueda del "por qué".
+                      </p>
+                    </div>
+
+                    <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6">
+                      <h3 className="text-lg font-semibold text-white mb-2">
+                        <strong>Depurador</strong> (pensamiento + evaluación)
+                      </h3>
+                      <p className="text-white/70 italic mb-3">El optimizador de sistemas y procesos</p>
+                      <p className="text-white/80 leading-relaxed mb-3">
+                        Los <strong>depuradores</strong> toman lo que existe y lo perfeccionan. Combinan el análisis riguroso 
+                        con la evaluación crítica para optimizar procesos, sistemas y soluciones. Son los responsables de 
+                        convertir ideas prometedoras en realidades eficientes y escalables, eliminando redundancias y 
+                        maximizando el impacto de cada recurso invertido.
+                      </p>
+                      <p className="text-white/70 text-sm">
+                        <strong>Características distintivas:</strong> enfoque en mejora y perfeccionamiento, orientación a 
+                        resultados, preferencia por soluciones probadas, disciplina estructural.
+                      </p>
+                    </div>
+
+                    <div className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6">
+                      <h3 className="text-lg font-semibold text-white mb-2">
+                        <strong>Materializador</strong> (evaluación + experiencia)
+                      </h3>
+                      <p className="text-white/70 italic mb-3">El constructor de realidades tangibles</p>
+                      <p className="text-white/80 leading-relaxed mb-3">
+                        Los <strong>materializadores</strong> convierten conceptos en realidad tangible. Combinan la evaluación 
+                        cuidadosa con la aplicación práctica, asegurándose de que las ideas no solo sean innovadoras, sino 
+                        también viables y sostenibles. Son los ejecutores que llevan los proyectos desde la conceptualización 
+                        hasta la implementación exitosa, con un enfoque especial en la factibilidad y la gestión de riesgos.
+                      </p>
+                      <p className="text-white/70 text-sm">
+                        <strong>Características distintivas:</strong> aplicación práctica, evaluación de viabilidad, 
+                        planificación detallada, estabilidad y confiabilidad en la ejecución.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="backdrop-blur-sm bg-white/5 rounded-2xl border border-white/10 p-6">
+                  <p className="text-white/80 leading-relaxed text-center">
+                    Esta evaluación no busca encasillar, sino <strong className="text-white">potenciar</strong> el estilo 
+                    natural de cada persona mientras identifica oportunidades de crecimiento y colaboración efectiva con 
+                    otros perfiles innovadores.
+                  </p>
+                </section>
+              </div>
+            </div>
+
+            <div className="text-center mt-8 sm:mt-12">
+              <button
+                onClick={() => setCurrentStep('register')}
+                className="px-8 sm:px-12 py-3 sm:py-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/40 rounded-2xl text-white font-light text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl"
+              >
+                Continuar a la evaluación
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (showResults) {
     const maxPercentage = Math.max(...Object.values(showResults.porcentajes));
     const dominantStyle = Object.keys(showResults.porcentajes).find(
